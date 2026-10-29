@@ -41,4 +41,4 @@ This repository is a **creative-site project**, not the GitHub author's develope
 
 ## License
 
-No open-source license has been added to this repository. Source-code and asset licensing should be confirmed with the relevant rights holders before selecting a license.
+The repository includes an [MIT License](LICENSE) for code owned by the copyright holder. Third-party photographs, branding, fonts, and other assets may have separate licenses and are not automatically covered by the MIT grant.
