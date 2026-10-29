@@ -1,54 +1,44 @@
-# React + TypeScript + Vite
+# CHRIZ — Creative Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive portfolio website for **CHRIZ**, showcasing photography and filmmaking projects through a minimalist, image-led interface.
 
-Currently, two official plugins are available:
+## Highlights
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Dark visual design centered on project photography
+- Animated page entrance and scroll-based transitions using Framer Motion
+- Responsive layout for desktop and mobile
+- Project showcase and contact navigation
+- Social media integration
 
-## Expanding the ESLint configuration
+## Tech stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**React · TypeScript · Vite · Tailwind CSS · Framer Motion · React Router**
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Getting started
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+For a production build:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run build
+npm run preview
 ```
+
+## Repository structure
+
+- `src/pages/` — application pages
+- `src/components/` — navigation, project cards, animated sections, and page content
+- `src/routes/` — client-side routes
+- `src/assets/` — local assets and typography
+
+## Notes
+
+This repository is a **creative-site project**, not the GitHub author's developer profile README. Some photographs, branding, and fonts are supplied or hosted separately and may have third-party rights. Do not assume those assets are freely reusable.
+
+## License
+
+No open-source license has been added to this repository. Source-code and asset licensing should be confirmed with the relevant rights holders before selecting a license.
