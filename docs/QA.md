@@ -9,8 +9,8 @@ Validated on Windows with Node 22.16.0 and npm 11.11.0, 2026-11-01. Results desc
 | Clean dependency installation | `npm ci` and `npm run check` succeed in a fresh isolated clone |
 | ESLint | Pass |
 | TypeScript | App, build scripts, Playwright configuration, and tests pass |
-| Node tests | 31 pass |
-| Playwright | 18 pass, Chromium desktop and mobile |
+| Node tests | 32 pass |
+| Playwright | 54 pass: Chromium desktop/mobile, Firefox desktop/narrow, WebKit desktop/mobile |
 | Production asset/build validation | 3 sample projects and 8 referenced local assets pass |
 | Production dependency audit | Zero vulnerabilities with `npm audit --omit=dev` |
 | Full dependency audit | 12 moderate development-tool findings, shared minimatch advisory; see below |
@@ -31,15 +31,21 @@ Local screenshots and inspector outputs remain ignored in `.taste-skill/`; they 
 
 ## Performance and dependency changes
 
-Initial build: 345.89 kB JavaScript / 112.71 kB gzip. Current build: approximately 282.36 kB / 89.80 kB gzip; CSS approximately 17.22 kB / 4.44 kB gzip. Unused icon/UI/motion packages were removed; the runtime only needs React, React DOM, and React Router. All display fonts come from the system. No runtime third-party image/font requests are required.
+Initial build: 345.89 kB JavaScript / 112.71 kB gzip. Current build: approximately 282.59 kB / 89.86 kB gzip; CSS approximately 17.22 kB / 4.44 kB gzip. Unused icon/UI/motion packages were removed; the runtime only needs React, React DOM, and React Router. All display fonts come from the system. No runtime third-party image/font requests are required.
 
 Compatible lockfile updates include React/DOM 19.3.1, Router 7.18.5, Vite 6.4.5, Tailwind 3.4.19, TypeScript 5.8.3. The package keeps its existing major-version architecture.
 
 The full `npm audit` still reports 12 moderate findings through local ESLint/TypeScript-ESLint dependencies on minimatch ([GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249)). Compatible updates did not remove them; npm proposes a forced downgrade for part of the tree. No force fix or unverified cross-major override was applied. ESLint 9 also emits an upstream end-of-support/deprecation notice. Reassess this development toolchain when a compatible, tested migration is available. The runtime-only audit reports zero findings. No vulnerable production dependency was knowingly retained from the initial audit.
 
+## Publication review and CI
+
+See [release review](RELEASE_REVIEW.md) for reproduced defects, fixes, and the dependency investigation. New regressions cover extra theme markup and the active Work anchor. Frozen unit/browser fixtures keep checks independent of user content; production tests read the actual built configuration, including empty portfolios. WebKit focus-return and skip-link failures were reproduced and corrected rather than skipped.
+
+The new push/pull-request workflow was validated with SHA256-verified actionlint 1.7.12. It uses read-only contents permission, no persisted checkout credential, pinned official checkout/setup-node v6 actions, Node 22, and a bounded standard Ubuntu job. Hosted execution evidence is pending the first push containing the workflow.
+
 ## Explicit limits
 
-- Real Firefox, Safari/WebKit, physical iOS/Android devices, and screen-reader sessions were not tested. Mobile tests emulate Chromium at 390px; additional narrow-layout checks use 320px.
+- Playwright Firefox and WebKit have been installed and exercised on Windows. The final matrix has Chromium desktop/mobile, Firefox desktop/narrow (viewport only), and WebKit desktop/mobile. This does not test branded Safari, physical iOS/Android devices, assistive hardware, or screen-reader sessions. Narrow checks also use 320px.
 - No public deployment, domain, external mail delivery, social account ownership, or third-party URL availability was tested or created.
 - Metadata is static for the homepage; hash routes do not promise independent project indexing or per-project social cards. Missing client routes keep the static server's HTTP 200 status.
 - Image validation checks local paths and file presence, not image licensing, compression, SVG sanitization, or the contents of arbitrary files. Use trusted assets.
@@ -51,7 +57,7 @@ The full `npm audit` still reports 12 moderate findings through local ESLint/Typ
 ```bash
 npm ci
 npm run check
-npx playwright install chromium
+npx playwright install chromium firefox webkit
 npm run test:e2e
 npm audit --omit=dev
 npm run preview

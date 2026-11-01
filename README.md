@@ -51,18 +51,18 @@ See the [customization guide](docs/CUSTOMIZATION.md) for examples, all configura
 | `npm run typecheck` | Check app, build scripts, and tests with TypeScript |
 | `npm test` | Run Node unit tests |
 | `npm run check` | Run lint, unit tests, validation, TypeScript, and production build |
-| `npm run test:e2e` | Build, then run Playwright/axe desktop and mobile browser tests |
+| `npm run test:e2e` | Build, then run Playwright/axe across Chromium, Firefox, and WebKit |
 | `npm run build` | Validate and produce the static site in `dist/` |
 | `npm run preview` | Serve the current production build locally |
 
-For browser tests, install Chromium once:
+For browser tests, install the three Playwright engines once:
 
 ```bash
-npx playwright install chromium
+npx playwright install chromium firefox webkit
 npm run test:e2e
 ```
 
-On a Linux CI machine, `npx playwright install --with-deps chromium` also installs browser system dependencies and may require administrator privileges. Browser downloads require network access. To use an installed browser instead, set `PLAYWRIGHT_CHANNEL` to `msedge` or `chrome` in your shell. Tests cover keyboard navigation, gallery controls, image errors, empty/single/customized portfolios, 320px layout, reduced motion, accessibility scans, and production builds at root/subdirectory paths.
+On a Linux CI machine, `npx playwright install --with-deps chromium firefox webkit` also installs browser system dependencies and may require administrator privileges. Browser downloads require network access. To use an installed Chrome or Edge for the Chromium projects, set `PLAYWRIGHT_CHANNEL` to `chrome` or `msedge`; Firefox/WebKit still use their installed Playwright engines. Tests cover keyboard navigation, gallery controls, image errors, empty/single/customized portfolios, 320px layout, reduced motion, accessibility scans, and production builds at root/subdirectory paths.
 
 ## Project structure
 
@@ -90,6 +90,12 @@ The site uses hash routes, such as `/#/work/field-notes`, so deep links and refr
 Code and original bundled SVG demonstration artwork are available under the [MIT License](LICENSE). The default graphics are fictional self-initiated studies, not real client work. No third-party photographs, logos, or font files are bundled. Fonts come from the visitor's system.
 
 Replace sample work and branding before presenting the portfolio as your own professional work. You are responsible for permissions for assets you add. The MIT code license does not grant rights to third-party material you add later. See [asset notes](public/images/README.md).
+
+## Continuous integration
+
+[GitHub Actions](.github/workflows/ci.yml) runs on pushes and pull requests: locked install, content/image validation, lint, unit tests, TypeScript, production build/audit, and all six desktop/narrow/mobile browser projects. It uses Node 22 and the standard Ubuntu runner, read-only repository permissions, pinned official actions, and no external credentials or deployment service.
+
+Tests use frozen demonstration fixtures under `tests/fixtures/`, so replacing your content or deleting public demo images does not break the behavioral tests. Production smoke tests still verify your actual built portfolio, including zero projects. Keep the test fixtures when removing sample files from `public/images/`.
 
 ## Quality and maintenance
 

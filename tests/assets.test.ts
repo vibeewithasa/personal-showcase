@@ -12,9 +12,10 @@ test('content command checks real files and fails clearly for a missing asset', 
   try {
     for (const path of ['scripts', 'src/content', 'public/images']) mkdirSync(join(folder, path), { recursive: true });
     writeFileSync(join(folder, 'package.json'), '{"type":"module"}');
-    for (const path of ['scripts/validate-content.ts', 'src/content/schema.ts', 'src/content/portfolio.json']) {
+    for (const path of ['scripts/validate-content.ts', 'src/content/schema.ts']) {
       copyFileSync(new URL(`../${path}`, import.meta.url), join(folder, path));
     }
+    copyFileSync(new URL('./fixtures/portfolio.json', import.meta.url), join(folder, 'src/content/portfolio.json'));
     const config = parsePortfolio(JSON.parse(readFileSync(join(folder, 'src/content/portfolio.json'), 'utf8')));
     for (const path of portfolioImages(config)) writeFileSync(join(folder, 'public', path), '<svg xmlns="http://www.w3.org/2000/svg"/>');
     const run = () => spawnSync(process.execPath, ['--experimental-strip-types', join(folder, 'scripts/validate-content.ts')], { encoding: 'utf8' });

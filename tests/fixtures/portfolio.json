@@ -1,0 +1,76 @@
+{
+  "demo": true,
+  "identity": {
+    "name": "Studio Practice",
+    "role": "Independent design & visual direction",
+    "intro": "A selection of identities, printed matter, and visual experiments. Thoughtful work, from the first idea to the smallest detail.",
+    "location": "Working everywhere",
+    "availability": "Open for collaborations"
+  },
+  "about": {
+    "title": "A considered approach.",
+    "paragraphs": [
+      "Studio Practice is a demonstration portfolio for independent creatives. Its projects explore the meeting point of clear ideas, expressive typography, and everyday objects.",
+      "Good work starts with a conversation. From a single printed piece to a complete visual identity, the aim is always the same: make something that feels right and works hard."
+    ],
+    "services": ["Visual identity", "Art direction", "Editorial design"]
+  },
+  "contact": {
+    "note": "Have a project in mind? Contact details will be available here soon.",
+    "links": []
+  },
+  "seo": {
+    "title": "Studio Practice — Independent design",
+    "description": "A demonstration creative portfolio featuring visual identities, editorial design, and graphic experiments. Built to make your own.",
+    "favicon": "images/favicon.svg",
+    "image": "images/share.png"
+  },
+  "theme": {
+    "background": "#12140f",
+    "surface": "#20231b",
+    "text": "#f3f3e9",
+    "muted": "#b8bdad",
+    "accent": "#d1ef82"
+  },
+  "projects": [
+    {
+      "slug": "field-notes",
+      "title": "Field Notes",
+      "category": "Visual identity",
+      "year": "2026",
+      "summary": "An identity for a slower way of seeing. Grounded in nature, built around a simple, expressive mark.",
+      "cover": {"src": "images/field-cover.svg", "alt": "Field Notes identity study: a green botanical symbol on pale yellow"},
+      "description": ["A self-initiated identity study about observation and the natural world. A leaf becomes a modular mark, used across a family of printed pieces.", "A restricted palette and generous typography give the identity room to breathe. This is original demonstration artwork, ready to replace with your own project."],
+      "gallery": [
+        {"src": "images/field-cover.svg", "alt": "Field Notes wordmark and modular leaf symbol"},
+        {"src": "images/field-detail.svg", "alt": "Two Field Notes editorial covers in forest green and pale yellow"}
+      ]
+    },
+    {
+      "slug": "common-ground",
+      "title": "Common Ground",
+      "category": "Editorial design",
+      "year": "2026",
+      "summary": "A publication about shared spaces. Bold letterforms, warm paper, and a different perspective on the familiar.",
+      "cover": {"src": "images/common-cover.svg", "alt": "Common Ground editorial study in rust red and warm white"},
+      "description": ["An experimental publication exploring the spaces we share. Large letterforms act as architecture: a place for stories, observations, and new perspectives.", "The system pairs a warm two-colour palette with an open grid. This self-initiated demonstration has no real client or commercial affiliation."],
+      "gallery": [
+        {"src": "images/common-cover.svg", "alt": "Common Ground publication cover with oversized typographic composition"},
+        {"src": "images/common-detail.svg", "alt": "Common Ground spread showing intersecting paths and an editorial text grid"}
+      ]
+    },
+    {
+      "slug": "after-hours",
+      "title": "After Hours",
+      "category": "Art direction",
+      "year": "2026",
+      "summary": "An exercise in rhythm and contrast. A graphic series for the moments between one day and the next.",
+      "cover": {"src": "images/after-cover.svg", "alt": "After Hours graphic study: electric blue circles and cream typography"},
+      "description": ["A graphic series inspired by the change of pace after sunset. Repeated circles create a sense of rhythm without depending on photography.", "Each composition uses the same few elements in a new arrangement. This is original sample artwork, not a real event or commissioned campaign."],
+      "gallery": [
+        {"src": "images/after-cover.svg", "alt": "After Hours typographic poster with concentric blue circles"},
+        {"src": "images/after-detail.svg", "alt": "Companion After Hours composition with a blue disk and offset cream rings"}
+      ]
+    }
+  ]
+}

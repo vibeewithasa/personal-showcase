@@ -1,8 +1,9 @@
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
-const demo = JSON.parse(readFileSync(new URL('../../src/content/portfolio.json', import.meta.url), 'utf8'));
+const demo = JSON.parse(readFileSync(new URL('../fixtures/portfolio.json', import.meta.url), 'utf8'));
 
 async function navigation(page: Page) {
   const menu = page.getByRole('button', { name: 'Menu' });
@@ -15,6 +16,15 @@ async function customize(page: Page, config: typeof demo) {
     contentType: 'application/javascript', body: `export default ${JSON.stringify(config)};`,
   }));
 }
+
+test.beforeEach(async ({ page }) => {
+  await customize(page, demo);
+  await page.route('**/images/**', route => {
+    const name = new URL(route.request().url()).pathname.split('/').pop()!;
+    const path = resolve('tests/fixtures/images', name);
+    return existsSync(path) ? route.fulfill({ path }) : route.continue();
+  });
+});
 
 async function noOverflow(page: Page) {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
@@ -67,6 +77,7 @@ test('projects have working detail routes, a modal gallery, and refreshable URLs
 
 test('keyboard skip link, mobile disclosure, and about navigation work', async ({ page }) => {
   await page.goto('/');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(demo.identity.name);
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
   await page.keyboard.press('Enter');
@@ -187,5 +198,6 @@ test('reduced motion, narrow screens, and long content remain readable', async (
   await page.getByRole('link', { name: 'View selected work' }).click();
   await expect(page.locator('#work')).toBeFocused();
   await expect(page.locator('#work')).toBeInViewport();
+  await expect(page.locator('#main-navigation a[aria-current="page"]')).toHaveText('Work');
   await accessible(page);
 });

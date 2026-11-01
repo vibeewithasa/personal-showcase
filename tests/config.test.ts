@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { contrast, parsePortfolio, portfolioImages } from '../src/content/schema.ts';
 
-const sample = JSON.parse(readFileSync(new URL('../src/content/portfolio.json', import.meta.url), 'utf8'));
+const sample = JSON.parse(readFileSync(new URL('./fixtures/portfolio.json', import.meta.url), 'utf8'));
 
 test('complete demo and all documented optional sections validate', () => {
   const config = parsePortfolio(structuredClone(sample));
@@ -55,6 +55,7 @@ const invalid: [string, (config: typeof sample) => void, RegExp][] = [
   ['empty alt', c => { c.projects[0].cover.alt = ''; }, /alt/],
   ['missing paragraph', c => { c.projects[0].description = []; }, /paragraph/],
   ['invalid theme colour', c => { c.theme.accent = 'red'; }, /hex/],
+  ['unexpected theme markup', c => { c.theme.extra = '</style><script>document.documentElement.dataset.unexpected=1</script>'; }, /theme.*only/],
   ['poor text contrast', c => { c.theme.text = c.theme.background; }, /contrast/],
 ];
 for (const [name, change, error] of invalid) {

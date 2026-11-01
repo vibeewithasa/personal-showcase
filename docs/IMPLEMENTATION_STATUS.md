@@ -1,42 +1,26 @@
-# Reusable portfolio implementation
+# Reusable portfolio implementation status
 
 ## Objective and Git safety
-Turn Personal Showcase into a configurable, accessible static creative portfolio. Work only on `feat/reusable-portfolio-template`; no PR, merge, or deployment.
+The functional template is complete. This publication-readiness pass starts at confirmed `23d169671e32f1f96f6e3aa37e9a4b57ffd2ed2e` and works only on `feat/reusable-portfolio-template` in `.worktrees/reusable-template`.
 
-- Base: `origin/main`, `e05d815e10c3a97dd4a3aacb2dafe0adee820a85`, fetched 2026-11-01.
-- `origin` uses the former `asa-dot/PersonalShowcase` URL. GitHub redirects it to `vibeewithasa/personal-showcase`; both API lookups identify repository 991135749.
-- Isolated checkout: `.worktrees/reusable-template`. The original checkout's modified Home/routes, untracked MainLayout/Contact, and `.serena/` are untouched.
-- No unpublished local commits on main. The requested branch did not exist locally or remotely. The discarded release branch was neither checked out nor used.
+- Main remains `e05d815e10c3a97dd4a3aacb2dafe0adee820a85`. The dirty original checkout's Home/routes, untracked MainLayout/Contact, and agent state are preserved.
+- Origin's old `asa-dot/PersonalShowcase` URL redirects to `vibeewithasa/personal-showcase`, repository 991135749, verified public.
+- The discarded release branch was not used, modified, merged, or cherry-picked. No PR, merge, deployment, external credential/service, or paid resource was created.
 
-## Milestones
-- A complete: repository and base verified, unrelated work isolated, initial code/tool audit performed.
-- B–D complete: typed/validated JSON configuration, local original artwork, functional work/detail/contact/404 pages, accessible galleries/navigation, responsive styling and reduced motion.
-- E complete: 31 unit tests and 18 desktop/mobile browser flows pass, including the production build at root/subdirectory paths. Visual captures reviewed at 1440/768/390/320; no horizontal overflow and default hero at most two lines.
-- F complete: English README, customization/deployment guides, artwork licensing, QA results/limits, and reproducible commands.
-- G complete: fresh clone install/check; real JSON + local-image customization; production browser smoke; full diff review against main; no personal runtime dependencies or generated artifacts in tracked files. All implementation milestones are complete.
+## Completed earlier
+One validated JSON configuration; local licensed demo art; work/detail/contact/404 pages; native gallery; responsive styling; keyboard/reduced motion; English customization/deployment guides. Hash routing remains intentional; crawler/social metadata limits are unchanged. Earlier commits: 7407c82, bf44a93, 8240995, 23d1696.
 
-## Findings and decisions
-- Baseline lint/build pass using ancestor-installed dependencies; this is not a clean-install verification.
-- Baseline package ranges: React 19.1, TypeScript 5.8, Vite 6.3, Router 7.6, Tailwind 3.4, Motion 12.15.
-- Existing strengths: dark canvas, image-led work, alternating rows, responsive layout.
-- Gaps: personal/remote assets, nonfunctional project buttons, missing contact route, inaccessible mobile disclosure, no config validation or tests.
-- Graphify is installed; no graph exists. Direct symbol inspection is sufficient for this small source tree; no graph generated.
-- Keep the static React/Vite architecture. Use one JSON config and local demonstration artwork with explicit licensing. No backend, CMS, paid service, or deployment.
-- Acceptance: clean install; lint/typecheck/build; valid/invalid configuration and local assets; real navigation/details/gallery; keyboard/mobile/reduced-motion QA; empty/optional content; documented customization and static hosting.
+## Publication-readiness progress
+- Fresh technical review completed. See RELEASE_REVIEW.md for concrete reproductions and fixes: unexpected theme properties reaching generated styles; inactive Work anchor; demo-coupled checks failing after personalization; WebKit gallery focus return; WebKit skip-link keyboard behavior.
+- Shared validation now admits only the five validated theme colours. Work anchors remain current. Dialog close explicitly restores its recorded opener. The skip link has explicit zero tabindex for WebKit; keyboard tests wait for React's initial content.
+- Unit/development-browser checks use frozen MIT-licensed fixtures; production smoke tests read the actual owner configuration and support zero projects. No product architecture or runtime dependency change.
+- Minimal .github/workflows/ci.yml added for push/pull_request: npm ci, validate, lint, unit tests, TypeScript, build, production audit, and all three browser engines across six projects. Read-only permissions, no persisted checkout credential, verified/pinned official v6 Actions, standard Ubuntu/Node 22. actionlint 1.7.12 passes.
+- Firefox 157 (Playwright 1555) and WebKit 27.2 (2370) installed from official Playwright downloads. Chromium already installed. Final local six-project run passes: 54/54 tests, no skips.
+- Current npm run check passes: 32 unit tests, lint, TypeScript, validation and build. Build JavaScript: 89.86 kB gzip.
+- Full audit remains 12 moderate development-only findings from minimatch GHSA-g3hv-75wg-m249. Current/wanted direct tooling versions match; transitive ^3.1.5/^10.2.2 ranges exclude patched 11.0.1. No compatible fix, override, force downgrade, major migration, or lockfile churn applied. Production audit: zero findings. See RELEASE_REVIEW.md for threat conditions and bounded CI exposure.
 
-## Checks and known limits
-- Clean `npm ci` succeeds in the isolated checkout. Current lint/typecheck/build pass after compatible dependency updates.
-- 31 unit tests pass: complete/minimal/single config, invalid fields/links/paths/contrast, escaped metadata, subdirectory sharing URLs.
-- 18 Playwright flows pass on Chromium desktop/mobile, including axe WCAG A/AA scans of home, project, lightbox, contact and customized light theme; native dialog focus cycling/return; menu Escape; skip/section focus; refresh/404; image failures; empty/single content; 320px/reduced motion.
-- Build JS is 89.80 kB gzip vs 112.7 kB baseline. Runtime now only React, React DOM, Router; unused icon/UI/motion libraries and personal/font assets with unverified rights removed.
-- `npm audit --omit=dev`: zero vulnerabilities. Full audit reports 12 moderate development-tool dependency findings stemming from the minimatch advisory GHSA-g3hv-75wg-m249. No compatible upstream resolution from `npm update`; do not apply forced downgrades or cross-major overrides without testing.
-- Hash routing intentionally supports static hosts/subdirectories without rewrites. It limits per-project crawler/social metadata; static homepage metadata is generated at build time. No deploy performed.
-- Original SVG studies and an original sharing PNG replace third-party photography. The design inspector's style gate does not pass because of documented intentional differences (see QA.md); layout/contrast/console/asset measurements have no reported errors.
-- Fresh clone of 8240995: npm ci/check pass. File-only River Studio customization: validation, build and production-browser assertions pass for light theme, new local image, single gallery, metadata, contact, direct URL reload and mobile layout.
-- Final branch: npm run check and npm run test:e2e pass (31 unit / 18 browser). Email validation/URI encoding includes plus addresses and header-injection regressions; gallery backdrop focus return is checked. Regressions also cover incomplete HTTPS URLs, phones without digits, and filename-case mismatches on Windows.
-- Original main's tracked changes and untracked source files remain untouched. Only a local .git/info/exclude entry was added to hide the nested worktree from accidental staging. No graph/agent artifacts, secrets, installed dependency trees, build output, or QA captures are included in the product commits.
+## Pending before closure
+Commit/push the reviewed CI change, verify the hosted Actions result, then repeat real file/image customization with public demo images removed and zero-project configuration. Update QA/status with actual results and verify final remote SHA.
 
-## Next step / resuming
-Review the completed authorized branch with `git log origin/main..HEAD` and `git diff origin/main...HEAD`. Read README.md, docs/CUSTOMIZATION.md and docs/QA.md. There is no remaining implementation blocker; optional follow-up is a tested development-linter migration and broader real-browser/screen-reader QA. No PR, merge or deploy was made.
-
-For further local work, use `.worktrees/reusable-template` and first run `git status --short --branch`. Do not edit or discard the unrelated original main changes or use the discarded release branch. Local QA copies/screenshots under `.taste-skill/` are ignored and intentionally unversioned. Run npm run check and npm run test:e2e after substantive changes. Commit/push only to the authorized feature branch unless the owner gives new instructions.
+## Resume safely
+Use this worktree and inspect git status first. Keep unrelated original main changes intact. Never use the discarded release branch. QA downloads, traces, copies, and screenshots stay ignored under .taste-skill/ or test-results/. Push only the authorized feature branch. Physical Safari/iOS/Android and screen-reader checks remain manual; no routing migration is planned.

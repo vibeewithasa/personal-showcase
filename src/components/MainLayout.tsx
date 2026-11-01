@@ -19,7 +19,8 @@ export default function MainLayout() {
   }, [location]);
   return (
     <>
-      <a className="skip-link" href="#/#main-content" onClick={event => {
+      {/* WebKit needs explicit tabindex to include this skip link in Tab navigation. */}
+      <a tabIndex={0} className="skip-link" href="#/#main-content" onClick={event => {
         event.preventDefault();
         document.getElementById('main-content')?.focus();
       }}>Skip to content</a>

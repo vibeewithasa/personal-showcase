@@ -4,7 +4,7 @@ import test from 'node:test';
 import { parsePortfolio } from '../src/content/schema.ts';
 import { metadata } from '../scripts/metadata.ts';
 
-const sample = JSON.parse(readFileSync(new URL('../src/content/portfolio.json', import.meta.url), 'utf8'));
+const sample = JSON.parse(readFileSync(new URL('./fixtures/portfolio.json', import.meta.url), 'utf8'));
 
 test('metadata has no invented domain or personal external dependency', () => {
   const tags = metadata(parsePortfolio(sample), './');

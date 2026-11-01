@@ -9,13 +9,16 @@ export default defineConfig({
   reporter: 'list',
   use: {
     baseURL: 'http://127.0.0.1:4173',
-    channel: process.env.PLAYWRIGHT_CHANNEL || 'chromium',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
   },
   projects: [
-    { name: 'desktop', use: { viewport: { width: 1440, height: 1000 } } },
-    { name: 'mobile', use: { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } },
+    { name: 'desktop', use: { browserName: 'chromium', channel: process.env.PLAYWRIGHT_CHANNEL || 'chromium', viewport: { width: 1440, height: 1000 } } },
+    { name: 'mobile', use: { browserName: 'chromium', channel: process.env.PLAYWRIGHT_CHANNEL || 'chromium', viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } },
+    { name: 'firefox', use: { browserName: 'firefox', viewport: { width: 1440, height: 1000 } } },
+    { name: 'firefox-narrow', use: { browserName: 'firefox', viewport: { width: 390, height: 844 } } },
+    { name: 'webkit', use: { browserName: 'webkit', viewport: { width: 1440, height: 1000 } } },
+    { name: 'webkit-mobile', use: { browserName: 'webkit', viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } },
   ],
   webServer: { command: 'npm run dev -- --port 4173 --strictPort', url: 'http://127.0.0.1:4173', reuseExistingServer: !process.env.CI },
 });

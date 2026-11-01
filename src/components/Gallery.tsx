@@ -5,12 +5,14 @@ import PortfolioImage from './PortfolioImage';
 export default function Gallery({ images, title }: { images: ImageData[]; title: string }) {
   const [index, setIndex] = useState(0);
   const dialog = useRef<HTMLDialogElement>(null);
+  const opener = useRef<HTMLButtonElement>(null);
   if (!images.length) return null;
   const step = (direction: number) => setIndex(current => (current + direction + images.length) % images.length);
   return (
     <section className="gallery" aria-label={`${title} gallery`}>
       <div className="gallery-grid">
-        {images.map((image, position) => <button className="gallery-image" type="button" key={`${image.src}-${position}`} onClick={() => {
+        {images.map((image, position) => <button className="gallery-image" type="button" key={`${image.src}-${position}`} onClick={event => {
+          opener.current = event.currentTarget;
           setIndex(position);
           dialog.current?.showModal();
         }} aria-label={`Enlarge image ${position + 1}: ${image.alt}`} aria-haspopup="dialog">
@@ -18,7 +20,7 @@ export default function Gallery({ images, title }: { images: ImageData[]; title:
           <span className="image-action" aria-hidden="true">Enlarge ↗</span>
         </button>)}
       </div>
-      <dialog ref={dialog} className="lightbox" aria-label={`${title} image viewer`} onClick={event => {
+      <dialog ref={dialog} className="lightbox" onClose={() => opener.current?.focus()} aria-label={`${title} image viewer`} onClick={event => {
         if (event.target === event.currentTarget) dialog.current?.close();
       }} onKeyDown={event => {
         if (event.key === 'Tab') {

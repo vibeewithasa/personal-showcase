@@ -11,7 +11,7 @@ npm run test:e2e
 npm run preview
 ```
 
-Install the Playwright browser once before browser tests (`npx playwright install chromium`). Open the URL printed by the preview command, normally `http://127.0.0.1:4173`. Check your real content and contact destinations before uploading anything. `preview` serves the existing `dist/`; rebuild after changes. It is a local review server, not a production server.
+Install the Playwright browser once before browser tests (`npx playwright install chromium firefox webkit`). Open the URL printed by the preview command, normally `http://127.0.0.1:4173`. Check your real content and contact destinations before uploading anything. `preview` serves the existing `dist/`; rebuild after changes. It is a local review server, not a production server.
 
 ## Publish the build
 

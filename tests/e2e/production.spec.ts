@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 import { resolve, sep } from 'node:path';
+import { parsePortfolio } from '../../src/content/schema';
+
+const portfolio = parsePortfolio(JSON.parse(readFileSync(new URL('../../src/content/portfolio.json', import.meta.url), 'utf8')));
 
 // Serve the actual build through request interception, as a plain static host would.
 test('production build works at a domain root and in a subdirectory without rewrites', async ({ page }) => {
@@ -18,17 +22,22 @@ test('production build works at a domain root and in a subdirectory without rewr
     const response = await page.goto(`http://portfolio.test${prefix}`);
     const html = await response!.text();
     expect(html.indexOf('charset=')).toBeLessThan(html.indexOf('<title>'));
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Studio Practice');
-    const cover = page.getByRole('link', { name: 'View Field Notes', exact: true });
-    await cover.scrollIntoViewIfNeeded();
-    await expect(cover.locator('img')).toBeVisible();
-    await expect.poll(() => cover.locator('img').evaluate(image => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0)).toBe(true);
-    await cover.click();
-    await page.reload();
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Field Notes');
-    await page.getByRole('button', { name: /Enlarge image 1:/ }).click();
-    await expect(page.getByRole('dialog')).toBeVisible();
-    await page.getByRole('button', { name: 'Close', exact: true }).click();
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(portfolio.identity.name);
+    await expect(page).toHaveTitle(portfolio.seo.title);
+    const project = portfolio.projects[0];
+    if (project) {
+      const cover = page.getByRole('link', { name: `View ${project.title}`, exact: true });
+      await cover.scrollIntoViewIfNeeded();
+      await expect.poll(() => cover.locator('img').evaluate(image => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0)).toBe(true);
+      await cover.click();
+      await page.reload();
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(project.title);
+      await page.getByRole('button', { name: /Enlarge image 1:/ }).click();
+      await expect(page.getByRole('dialog')).toBeVisible();
+      await page.getByRole('button', { name: 'Close', exact: true }).click();
+    } else {
+      await expect(page.getByRole('heading', { name: 'New work is on its way.' })).toBeVisible();
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.unrouteAll({ behavior: 'wait' });
   }

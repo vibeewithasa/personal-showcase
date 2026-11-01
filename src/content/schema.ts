@@ -123,6 +123,7 @@ export function parsePortfolio(value: unknown): Portfolio {
     requireValue(!url.search && !url.hash, 'seo.siteUrl', 'must not contain a query or hash.');
   }
   const theme = object(config.theme, 'theme');
+  requireValue(Object.keys(theme).length === 5, 'theme', 'must contain only background, surface, text, muted, and accent.');
   ['background', 'surface', 'text', 'muted', 'accent'].forEach(key => {
     requireValue(typeof theme[key] === 'string' && /^#[0-9a-f]{6}$/i.test(theme[key] as string), `theme.${key}`, 'must be a six-digit hex colour.');
   });
