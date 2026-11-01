@@ -19,8 +19,13 @@ One validated JSON configuration; local licensed demo art; work/detail/contact/4
 - Current npm run check passes: 32 unit tests, lint, TypeScript, validation and build. Build JavaScript: 89.86 kB gzip.
 - Full audit remains 12 moderate development-only findings from minimatch GHSA-g3hv-75wg-m249. Current/wanted direct tooling versions match; transitive ^3.1.5/^10.2.2 ranges exclude patched 11.0.1. No compatible fix, override, force downgrade, major migration, or lockfile churn applied. Production audit: zero findings. See RELEASE_REVIEW.md for threat conditions and bounded CI exposure.
 
-## Pending before closure
-Commit/push the reviewed CI change, verify the hosted Actions result, then repeat real file/image customization with public demo images removed and zero-project configuration. Update QA/status with actual results and verify final remote SHA.
+## Final verification evidence
+- Published implementation/workflow commit: ab9ea04c599c7af56a23cbe10b77abb75ea873a7. [Hosted run 41356144473](https://github.com/vibeewithasa/personal-showcase/actions/runs/41356144473) completed successfully on Ubuntu/Node 22. Every step passed; downloaded logs confirm 32 units and 54 browser passes, with no reported skips/flakes.
+- Fresh clone of ab9ea04: npm ci succeeds. Actual JSON, theme, identity, contact, metadata and one new artwork changed; original public demo images removed. npm run check passes (32 units/build), and 54/54 browser tests pass. Independent built-HTML metadata assertions pass.
+- Actual zero-project JSON in that clone: npm run check passes (32 units/build), plus 6/6 production smoke projects across root/subdirectory paths. No source changes were needed for either customization.
+
+## Release candidate status
+Publication-readiness scope is complete, with source and CI changes in ab9ea04 and final evidence recorded in the subsequent documentation commit. No application work remains. Review QA.md and RELEASE_REVIEW.md before publishing your own content. Accepted limitations: development-only minimatch audit findings, physical-device/screen-reader validation, and the previously documented hash-route SEO limits. No PR, merge or deployment has been performed.
 
 ## Resume safely
 Use this worktree and inspect git status first. Keep unrelated original main changes intact. Never use the discarded release branch. QA downloads, traces, copies, and screenshots stay ignored under .taste-skill/ or test-results/. Push only the authorized feature branch. Physical Safari/iOS/Android and screen-reader checks remain manual; no routing migration is planned.
