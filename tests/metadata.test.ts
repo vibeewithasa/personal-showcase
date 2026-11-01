@@ -21,6 +21,19 @@ test('configured site URL produces absolute sharing URLs including subdirectory'
   assert.equal(tags.find(tag => tag.attrs?.property === 'og:image')?.attrs?.content, 'https://example.com/portfolio/images/share.png');
 });
 
+test('no-JavaScript fallback includes real content and escapes user markup', () => {
+  const config = structuredClone(sample);
+  config.identity.name = '</noscript><script>alert(1)</script>';
+  config.contact.email = 'hello+work@example.com';
+  const html = metadata(parsePortfolio(config), './').find(tag => tag.tag === 'noscript')?.children;
+  assert.equal(typeof html, 'string');
+  assert.ok((html as string).includes('&lt;/noscript&gt;&lt;script&gt;alert(1)&lt;/script&gt;'));
+  assert.ok((html as string).includes('images/field-cover.svg'));
+  assert.ok((html as string).includes('mailto:hello%2Bwork@example.com'));
+  config.projects = [];
+  assert.ok(String(metadata(parsePortfolio(config), './').find(tag => tag.tag === 'noscript')?.children).includes('New work is on its way.'));
+});
+
 test('user metadata is escaped before entering static HTML', () => {
   const config = structuredClone(sample);
   config.seo.title = '</title><script>alert("x")</script>';

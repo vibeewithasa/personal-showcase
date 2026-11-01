@@ -2,10 +2,13 @@ import { useEffect, useRef } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { portfolio } from '../content/config';
 import NavBar from './NavBar';
+import { usePageMotion } from '../motion/motion';
 
 export default function MainLayout() {
   const location = useLocation();
   const previousLocation = useRef(location.key);
+  const main = useRef<HTMLElement>(null);
+  usePageMotion(main, location.pathname);
   useEffect(() => {
     const id = location.hash.slice(1);
     const target = id ? document.getElementById(id) : document.querySelector<HTMLElement>('main h1');
@@ -25,7 +28,7 @@ export default function MainLayout() {
         document.getElementById('main-content')?.focus();
       }}>Skip to content</a>
       <NavBar key={location.pathname + location.hash} />
-      <main id="main-content" tabIndex={-1}><Outlet /></main>
+      <main ref={main} id="main-content" tabIndex={-1}><Outlet /></main>
       <footer className="site-footer page-width">
         <Link to="/" className="footer-name">{portfolio.identity.name}</Link>
         <div className="footer-bottom small">

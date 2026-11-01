@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import { portfolio } from './content/config';
 import './index.css';
+import './motion/motion.css';
 
 Object.entries(portfolio.theme).forEach(([name, colour]) => document.documentElement.style.setProperty(`--${name}`, colour));
 

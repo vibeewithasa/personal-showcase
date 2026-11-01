@@ -1,0 +1,65 @@
+:root {
+  --motion-ease: cubic-bezier(.22, 1, .36, 1);
+  --motion-hero: 840ms;
+  --motion-picture: 950ms;
+  --motion-reveal: 720ms;
+  --motion-control: 340ms;
+  --motion-page: 420ms;
+  --motion-exit: 180ms;
+  --motion-hover: 220ms;
+  --motion-stagger: 80ms;
+}
+.word-mask { display: inline-block; max-width: 100%; overflow: clip; vertical-align: bottom; padding-bottom: .1em; margin-bottom: -.1em; }
+.word-mask > span { display: block; }
+.main-nav.is-present { display: flex; }
+.main-nav.is-closing { pointer-events: none; }
+.lightbox { transform-origin: 50% 55%; overflow-x: clip; }
+.lightbox-image { display: flex; align-items: center; height: min(65dvh, 750px); max-height: calc(100dvh - 215px); min-height: 0; flex: 0 1 auto; }
+.lightbox-image > .image-frame { height: 100%; max-height: none; }
+.lightbox .lightbox-image img { height: 100%; }
+.lightbox .image-error { min-height: 0; }
+.lightbox-toolbar, .lightbox-caption { flex-shrink: 0; }
+.lightbox-toolbar [role="status"] { min-width: 5ch; }
+.noscript-page { padding-block: 64px; }
+.noscript-page > * { margin-bottom: 32px; }
+.noscript-page h1 { font-size: var(--heading); }
+.noscript-project { margin-block: 64px; }
+.noscript-project > * { margin-bottom: 24px; }
+.noscript-project img { width: min(100%, 900px); height: auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .primary-link, .text-link, .main-nav a, .menu-toggle, .lightbox button { transition: color var(--motion-hover) ease, background var(--motion-hover) ease, transform var(--motion-hover) var(--motion-ease); }
+  .primary-link:hover { transform: translateY(-4px); }
+  .primary-link:active, .menu-toggle:active, .lightbox button:active { transform: scale(.97); }
+  .primary-link > span, .text-link > span[aria-hidden], .next-link > span:last-child { transition: transform var(--motion-control) var(--motion-ease); }
+  .primary-link:is(:hover, :focus-visible) > span { transform: translateY(4px); }
+  .text-link:is(:hover, :focus-visible) > span[aria-hidden] { transform: translate(4px, -3px); }
+  .next-link:is(:hover, :focus-visible) > span:last-child { transform: translateX(12px); }
+  .main-nav a { position: relative; }
+  .main-nav a::after { content: ''; position: absolute; height: 2px; left: 0; right: 0; bottom: 4px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform var(--motion-control) var(--motion-ease); }
+  .main-nav a:is(:hover, :focus-visible)::after, .main-nav a[aria-current]::after { transform: scaleX(1); }
+  .main-nav a[aria-current]::after { animation: nav-ink var(--motion-page) var(--motion-ease) both; }
+  .menu-symbol { display: inline-block; transition: transform var(--motion-control) var(--motion-ease); }
+  .menu-toggle[aria-expanded="true"] .menu-symbol { transform: rotate(45deg); }
+  .main-nav { transform-origin: top right; }
+  .project-image-link { overflow: clip; }
+  .project-image-link .image-frame { transform: translateY(var(--image-drift, 0px)) scale(1.06); }
+  .image-frame img { transition: transform var(--motion-picture) var(--motion-ease); }
+  .project-image-link:is(:hover, :focus-visible) img { transform: scale(1.045); }
+  .gallery-image:is(:hover, :focus-visible) img { transform: scale(1.025); }
+  .image-action { transform: translateY(16px) rotate(-3deg) scale(.96); transition: opacity var(--motion-control) ease, transform var(--motion-control) var(--motion-ease); }
+  .lightbox::backdrop { transition: background var(--motion-exit) ease; }
+  .lightbox[data-closing]::backdrop { background: rgb(0 0 0 / 0); }
+  .lightbox .is-loaded img { animation: image-resolve var(--motion-control) var(--motion-ease); }
+  @starting-style { .lightbox[open]::backdrop { background: rgb(0 0 0 / 0); } }
+  @keyframes nav-ink { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes image-resolve { from { opacity: .5; } to { opacity: 1; } }
+}
+@media (max-width: 640px) {
+  .lightbox-image { height: min(55dvh, 600px); }
+  .image-action { transform: none; }
+  .main-nav a::after { right: auto; width: 36px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .primary-link:hover, .project-image-link .image-frame, .project-image-link:hover img, .gallery-image:hover img { transform: none; }
+}

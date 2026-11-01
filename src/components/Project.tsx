@@ -4,16 +4,16 @@ import PortfolioImage from './PortfolioImage';
 
 export default function Project({ project, reverse = false }: { project: PortfolioProject; reverse?: boolean }) {
   return (
-    <article className={`project-row ${reverse ? 'is-reversed' : ''}`}>
-      <Link className="project-image-link" to={`/work/${project.slug}`} aria-label={`View ${project.title}`}>
+    <article data-motion-group className={`project-row ${reverse ? 'is-reversed' : ''}`}>
+      <Link data-motion={reverse ? 'picture-reverse' : 'picture'} data-parallax className="project-image-link" to={`/work/${project.slug}`} aria-label={`View ${project.title}`}>
         <PortfolioImage image={project.cover} />
         <span className="image-action" aria-hidden="true">View project ↗</span>
       </Link>
       <div className="project-copy">
-        {(project.category || project.year) && <p className="project-meta small">{[project.category, project.year].filter(Boolean).join(' / ')}</p>}
-        <h3><Link to={`/work/${project.slug}`}>{project.title}</Link></h3>
-        <p>{project.summary}</p>
-        <Link className="text-link" to={`/work/${project.slug}`}>Explore project <span aria-hidden="true">↗</span></Link>
+        {(project.category || project.year) && <p data-motion={reverse ? 'right' : 'line'} data-order="1" className="project-meta small">{[project.category, project.year].filter(Boolean).join(' / ')}</p>}
+        <h3 data-motion="line" data-order="2"><Link to={`/work/${project.slug}`}>{project.title}</Link></h3>
+        <p data-motion="rise" data-order="3">{project.summary}</p>
+        <Link data-motion="right" data-order="4" className="text-link" to={`/work/${project.slug}`}>Explore project <span aria-hidden="true">↗</span></Link>
       </div>
     </article>
   );
