@@ -9,7 +9,9 @@ The included **Studio Practice** identity and three graphic studies are clearly 
 - One configuration file for identity, biography, services, projects, contact, colours, and metadata.
 - Responsive, alternating project layouts and real project detail pages.
 - Native modal image viewer with previous/next controls, arrow keys, Escape, focus containment, and focus return.
-- Mobile navigation, keyboard skip link, visible focus, and reduced-motion support.
+- Masked hero typography, scroll reveals, subtle image depth, and animated navigation/native viewer.
+- Mobile navigation, keyboard skip link, visible focus, and live reduced-motion support.
+- Readable actual-content static fallback when JavaScript is disabled in the production build.
 - Local images with lazy loading, reserved image space, loading and failure states.
 - Empty portfolios, single projects, optional sections, and friendly missing-page recovery.
 - Build-time metadata, configurable favicon, and optional canonical/sharing URLs.
@@ -22,7 +24,7 @@ Install **Node.js 22.16 or newer** (a current supported LTS release is recommend
 ```bash
 git clone https://github.com/vibeewithasa/personal-showcase.git
 cd personal-showcase
-git switch feat/reusable-portfolio-template
+git switch feat/portfolio-motion-system
 npm ci
 npm run dev
 ```
@@ -73,6 +75,7 @@ src/components/            Layout, navigation, project rows, image handling, gal
 src/pages/                 Home, project detail, contact, missing page
 src/routes/                Route definitions
 src/index.css              Responsive layout and visual styles
+src/motion/                Native motion presets, tokens and lifecycle
 public/images/             Your local images and bundled sample artwork
 scripts/                   Build-time metadata and local-asset validation
 tests/                     Unit and browser tests
@@ -96,6 +99,10 @@ Replace sample work and branding before presenting the portfolio as your own pro
 [GitHub Actions](.github/workflows/ci.yml) runs on pushes and pull requests: locked install, content/image validation, lint, unit tests, TypeScript, production build/audit, and all six desktop/narrow/mobile browser projects. It uses Node 22 and the standard Ubuntu runner, read-only repository permissions, pinned official actions, and no external credentials or deployment service.
 
 Tests use frozen demonstration fixtures under `tests/fixtures/`, so replacing your content or deleting public demo images does not break the behavioral tests. Production smoke tests still verify your actual built portfolio, including zero projects. Keep the test fixtures when removing sample files from `public/images/`.
+
+## Motion design
+
+The motion layer uses native browser APIs and CSS, with no animation dependency. It responds live to the system reduced-motion preference and leaves content visible when effects fail. Content customization still uses the same JSON and local images. Adjust timing/easing in src/motion/motion.css; see [motion maintenance and evidence](docs/MOTION_SYSTEM.md) for presets, lifecycle and accessibility requirements.
 
 ## Quality and maintenance
 
