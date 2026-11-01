@@ -21,6 +21,13 @@ test('content command checks real files and fails clearly for a missing asset', 
     const valid = run();
     assert.equal(valid.status, 0, valid.stderr);
     assert.match(valid.stdout, /Portfolio valid: 3 projects, 8 local image assets/);
+    config.projects[0].cover.src = 'images/Field-Cover.svg';
+    writeFileSync(join(folder, 'src/content/portfolio.json'), JSON.stringify(config));
+    const wrongCase = run();
+    assert.notEqual(wrongCase.status, 0);
+    assert.match(wrongCase.stderr, /Check filename case/);
+    config.projects[0].cover.src = 'images/field-cover.svg';
+    writeFileSync(join(folder, 'src/content/portfolio.json'), JSON.stringify(config));
     unlinkSync(join(folder, 'public/images/field-cover.svg'));
     const invalid = run();
     assert.notEqual(invalid.status, 0);

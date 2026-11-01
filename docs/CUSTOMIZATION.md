@@ -45,7 +45,7 @@ Use at least one paragraph. Use `"services": []` to omit services. Delete the en
 - Covers display in a 4:3 frame and crop with `object-fit: cover`; prepare a suitable crop. The enlarged viewer uses `contain` to show the whole image. Portraits use a square crop. All frames reserve space before loading.
 - Only use SVG files from sources you trust. SVG can contain active content when opened directly; this template checks paths, not the contents of uploaded artwork.
 
-`npm run validate` verifies required fields and that every referenced image exists. Filename case must match exactly: many production hosts are case-sensitive even if your Windows filesystem is not. If an image fails at runtime, a visible alternative appears and navigation remains usable.
+`npm run validate` verifies required fields, file presence, and exact filename case on all platforms. Many production hosts are case-sensitive even if your Windows filesystem is not. If an image fails at runtime, a visible alternative appears and navigation remains usable.
 
 ## 4. Add or remove projects
 

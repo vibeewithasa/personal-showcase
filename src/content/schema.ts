@@ -69,7 +69,7 @@ function httpsUrl(value: unknown, path: string) {
   text(value, path);
   let url: URL;
   try { url = new URL(value); } catch { throw new Error(`Portfolio configuration: ${path} must be a complete HTTPS URL.`); }
-  requireValue(url.protocol === 'https:' && !url.username && !url.password, path, 'must be a complete HTTPS URL without credentials.');
+  requireValue(/^https:\/\//i.test(value) && url.protocol === 'https:' && !url.username && !url.password, path, 'must be a complete HTTPS URL without credentials.');
   return url;
 }
 
@@ -102,11 +102,11 @@ export function parsePortfolio(value: unknown): Portfolio {
   optionalText(contact.note, 'contact.note');
   if (contact.email !== undefined) {
     text(contact.email, 'contact.email');
-    requireValue(/^[^\s@?&#]+@[^\s@?&#]+\.[^\s@?&#]+$/.test(contact.email), 'contact.email', 'must be an email address.');
+    requireValue(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)+$/.test(contact.email), 'contact.email', 'must be an email address.');
   }
   if (contact.phone !== undefined) {
     text(contact.phone, 'contact.phone');
-    requireValue(/^\+?[0-9 ()-]{5,30}$/.test(contact.phone), 'contact.phone', 'must be a phone number.');
+    requireValue(/^\+?[0-9 ()-]{5,30}$/.test(contact.phone) && contact.phone.replace(/\D/g, '').length >= 5, 'contact.phone', 'must be a phone number.');
   }
   array(contact.links, 'contact.links').forEach((value, index) => {
     const link = object(value, `contact.links[${index}]`);

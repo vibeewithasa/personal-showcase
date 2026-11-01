@@ -53,6 +53,10 @@ test('projects have working detail routes, a modal gallery, and refreshable URLs
   await page.keyboard.press('Escape');
   await expect(dialog).not.toBeVisible();
   await expect(opener).toBeFocused();
+  await opener.click();
+  await page.mouse.click(2, 2);
+  await expect(dialog).not.toBeVisible();
+  await expect(opener).toBeFocused();
   await page.getByRole('link', { name: 'Next project Common Ground' }).click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Common Ground');
   await page.getByRole('link', { name: 'All work' }).click();
@@ -126,7 +130,7 @@ test('one-file customization changes identity, colours, images, contact, and opt
     portrait: { src: 'images/after-cover.svg', alt: 'Mara Sol studio artwork' },
   };
   config.theme = { background: '#fafaf4', surface: '#eeeee2', text: '#171a12', muted: '#434b36', accent: '#3e4e13' };
-  config.contact = { email: 'mara@example.com', phone: '+1 (555) 123-4567', note: 'Tell me what you are making.', links: [{ label: 'Journal', url: 'https://example.com/journal' }] };
+  config.contact = { email: 'mara+work@example.com', phone: '+1 (555) 123-4567', note: 'Tell me what you are making.', links: [{ label: 'Journal', url: 'https://example.com/journal' }] };
   config.projects = [config.projects[0]];
   config.projects[0].title = 'A new project';
   config.projects[0].gallery = [];
@@ -147,7 +151,7 @@ test('one-file customization changes identity, colours, images, contact, and opt
   const nav = await navigation(page);
   await expect(nav.getByRole('link', { name: 'About' })).toHaveCount(0);
   await nav.getByRole('link', { name: 'Contact', exact: true }).click();
-  await expect(page.getByRole('link', { name: 'mara@example.com' })).toHaveAttribute('href', 'mailto:mara@example.com');
+  await expect(page.getByRole('link', { name: 'mara+work@example.com' })).toHaveAttribute('href', 'mailto:mara%2Bwork@example.com');
   await expect(page.getByRole('link', { name: '+1 (555) 123-4567' })).toHaveAttribute('href', 'tel:+15551234567');
   await expect(page.getByRole('link', { name: /Journal/ })).toHaveAttribute('rel', 'noopener noreferrer');
   await noOverflow(page);
