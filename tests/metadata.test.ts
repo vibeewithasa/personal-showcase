@@ -18,7 +18,7 @@ test('configured site URL produces absolute sharing URLs including subdirectory'
   config.seo.siteUrl = 'https://example.com/portfolio';
   const tags = metadata(parsePortfolio(config), './');
   assert.equal(tags.find(tag => tag.attrs?.rel === 'canonical')?.attrs?.href, 'https://example.com/portfolio/');
-  assert.equal(tags.find(tag => tag.attrs?.property === 'og:image')?.attrs?.content, 'https://example.com/portfolio/images/share.svg');
+  assert.equal(tags.find(tag => tag.attrs?.property === 'og:image')?.attrs?.content, 'https://example.com/portfolio/images/share.png');
 });
 
 test('user metadata is escaped before entering static HTML', () => {

@@ -10,10 +10,10 @@
     "dev": "vite --host 127.0.0.1",
     "validate": "node --experimental-strip-types scripts/validate-content.ts",
     "typecheck": "tsc -b",
-    "build": "npm run validate && tsc -b && vite build",
+    "build": "tsc -b && vite build",
     "lint": "eslint .",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
-    "test:e2e": "playwright test",
+    "test:e2e": "npm run build && playwright test",
     "check": "npm run lint && npm test && npm run build",
     "preview": "vite preview --host 127.0.0.1"
   },

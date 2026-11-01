@@ -23,5 +23,5 @@ export function metadata(config: Portfolio, base: string): HtmlTagDescriptor[] {
     tags.push(meta('og:url', url, true), { tag: 'link', attrs: { rel: 'canonical', href: escape(url) } });
     if (config.seo.image) tags.push(meta('og:image', new URL(config.seo.image, url).href, true), meta('twitter:image', new URL(config.seo.image, url).href));
   }
-  return tags;
+  return tags.map(tag => ({ ...tag, injectTo: 'head' as const }));
 }
