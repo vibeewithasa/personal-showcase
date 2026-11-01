@@ -175,6 +175,19 @@ test('motion: reduced preference and live changes remove movement without hiding
   await expect(page.getByRole('dialog')).not.toBeVisible();
 });
 
+test('motion: ordinary long identity words stay whole at 320px', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 320, height: 740 });
+  const config = structuredClone(demo);
+  config.identity.name = 'Alexandria Montgomery Independent Creative Practice';
+  await page.route(/\/src\/content\/portfolio\.json(?:\?.*)?$/, route => route.fulfill({ contentType: 'application/javascript', body: `export default ${JSON.stringify(config)};` }));
+  await page.goto('/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName(config.identity.name);
+  const lines = await page.locator('.word-mask > span').evaluateAll(words => words.map(word => word.getBoundingClientRect().height / parseFloat(getComputedStyle(word).lineHeight)));
+  expect(lines.every(count => count < 1.1)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
 test('motion: blocked animation API leaves readable pages and usable controls', async ({ page }) => {
   await page.addInitScript(() => { Element.prototype.animate = () => { throw new Error('Animation API blocked for fallback test'); }; });
   const errors: string[] = [];

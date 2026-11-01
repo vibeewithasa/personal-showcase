@@ -56,6 +56,7 @@
   @keyframes image-resolve { from { opacity: .5; } to { opacity: 1; } }
 }
 @media (max-width: 640px) {
+  .hero h1 { font-size: clamp(3rem, 16.4vw, 4rem); }
   .lightbox-image { height: min(55dvh, 600px); }
   .image-action { transform: none; }
   .main-nav a::after { right: auto; width: 36px; }
