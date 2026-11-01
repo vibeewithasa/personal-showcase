@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local configuration and browser test outputs
+.env
+.env.*
+!.env.example
+playwright-report/
+test-results/

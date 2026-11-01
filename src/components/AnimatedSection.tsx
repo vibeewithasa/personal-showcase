@@ -1,48 +1,25 @@
-import type { ReactNode } from "react";
-import { motion, type Variants } from "framer-motion";
-
-interface AnimatedSectionProps {
-  id: string;
-  className?: string;
-  children: ReactNode;
-  effect?: "fade" | "fadeUp"; // Permite elegir el tipo de animación
-  once?: boolean; // Controla si la animación ocurre solo una vez
-}
-
-// Animaciones disponibles
-const variantsMap: Record<string, Variants> = {
-  fade: {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.7, ease: "easeOut" } },
-  },
-  fadeUp: {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.7, ease: "easeOut" },
-    },
-  },
-};
-
-const AnimatedSection: React.FC<AnimatedSectionProps> = ({
-  id,
-  className,
+import type { ReactNode } from 'react';
+import { m, useReducedMotion } from 'framer-motion';
+export default function AnimatedSection({
   children,
-  effect = "fade",
-  once = true,
-}) => (
-  <motion.section
-    id={id}
-    className={className}
-    variants={variantsMap[effect]}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once }}
-    style={{ opacity: 1 }} // Fallback para evitar que quede invisible
-  >
-    {children}
-  </motion.section>
-);
-
-export default AnimatedSection;
+  className,
+  id,
+}: {
+  children: ReactNode;
+  className?: string;
+  id?: string;
+}) {
+  const reduced = useReducedMotion();
+  return (
+    <m.section
+      id={id}
+      className={className}
+      initial={false}
+      whileInView={reduced ? undefined : { y: [14, 0], opacity: [0.7, 1] }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+    >
+      {children}
+    </m.section>
+  );
+}

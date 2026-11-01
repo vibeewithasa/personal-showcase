@@ -1,68 +1,59 @@
-import React from "react";
-import NavBar from "../components/NavBar";
-import AnimatedSection from "../components/AnimatedSection";
-import AboutMeContent from "../components/AboutMeContent";
-import "../index.css";
-import { motion } from "framer-motion";
-
-import Project from "../components/Project";
-
-const Home: React.FC = () => {
+import Arrow from '../components/Arrow';
+import { Link } from 'react-router-dom';
+import { portfolio } from '../content/portfolio';
+import Project from '../components/Project';
+import AnimatedSection from '../components/AnimatedSection';
+export default function Home() {
   return (
     <>
-      <motion.header
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-        className="fixed top-0 left-0 w-full z-50 bg-black"
-      >
-        <NavBar />
-      </motion.header>
-
-      <main className="bg-black">
-        <div
-          id="about"
-          className="pt-24 md:pt-28 min-h-[60vh] md:min-h-[52vh] flex items-start justify-center transition-opacity duration-700 opacity-0 animate-fadeIn"
-        >
-          <AboutMeContent />
+      <section className="intro-hero">
+        <div className="hero-topline">
+          <p className="eyebrow">{portfolio.profession}</p>
+          <span className="eyebrow">
+            Selected work / 01—
+            {String(portfolio.projects.length).padStart(2, '0')}
+          </span>
         </div>
-
-        {/* Sección projects pegada al about me, título estático */}
-        <section
-          id="projects"
-          className="w-full flex flex-col items-center justify-start"
-        >
-          <div className="w-full max-w-6xl mx-auto px-2 md:px-5">
-            <div className="opacity-0 animate-fadeIn">
-              <Project
-                image="https://res.cloudinary.com/dimmyentl/image/upload/v1753950999/Imagen_de_WhatsApp_2025-07-31_a_las_01.32.01_0859db68_esjsx9.jpg"
-                title="DEVON X CHRIZ"
-              />
-            </div>
-            <AnimatedSection effect="fadeUp" id="project-2" once={false}>
-              <Project
-                image="https://res.cloudinary.com/dimmyentl/image/upload/v1753951613/UCBFW_x_CHRIZ_Album_kypoor.jpg"
-                title="UCBFW X CHRIZ"
-                reverse
-              />
-            </AnimatedSection>
-            <AnimatedSection effect="fadeUp" id="project-3" once={false}>
-              <Project
-                image="https://res.cloudinary.com/dimmyentl/image/upload/v1753951607/ITZA_x_CHRIZ_Album_zqwbob.jpg"
-                title="ITZA X CHRIZ"
-              />
-            </AnimatedSection>
-          </div>
-        </section>
-
-        <div className="w-full flex justify-center items-end p-12">
-          <p className="text-xs uppercase tracking-widest text-gray-400 text-center px-4">
-            CHRIZ
+        <h1 className="hero-title">
+          {portfolio.name}
+          <span aria-hidden="true">㋛</span>
+        </h1>
+        <div className="hero-bottom">
+          <p>
+            Photography.
+            <br />
+            Film. A point of view.
           </p>
+          <a className="text-link" href="#selected-work">
+            Explore the work ↓
+          </a>
         </div>
-      </main>
+      </section>
+      <AnimatedSection id="selected-work" className="selected-work">
+        <div className="section-heading">
+          <p className="eyebrow">Selected projects</p>
+          <Link className="text-link" to="/portfolio">
+            All work <Arrow />
+          </Link>
+        </div>
+        {portfolio.projects.map((p, i) => (
+          <Project key={p.slug} project={p} index={i} />
+        ))}
+        {!portfolio.projects.length && (
+          <p className="empty-state">New work is on its way.</p>
+        )}
+      </AnimatedSection>
+      <section className="contact-strip">
+        <p className="eyebrow">Have something in mind?</p>
+        <Link to="/contact">
+          Let’s make
+          <br />
+          something.
+          <span aria-hidden="true">
+            <Arrow />
+          </span>
+        </Link>
+      </section>
     </>
   );
-};
-
-export default Home;
+}

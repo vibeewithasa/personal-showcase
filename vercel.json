@@ -1,0 +1,15 @@
+{
+  "routes": [
+    {
+      "src": "/(portfolio|about|contact|projects/[^/]+)/?$",
+      "dest": "/$1/index.html"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/index.html"
+    }
+  ]
+}
