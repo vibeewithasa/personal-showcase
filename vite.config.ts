@@ -1,10 +1,12 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { config } from './scripts/validate-content';
+import { metadata } from './scripts/metadata';
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    host: true,
-  },
+  plugins: [react(), {
+    name: 'portfolio-metadata',
+    transformIndexHtml: { order: 'post', handler: () => metadata(config, './') },
+  }],
+  base: './',
 });

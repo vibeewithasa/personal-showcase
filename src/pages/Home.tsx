@@ -1,68 +1,31 @@
-import React from "react";
-import NavBar from "../components/NavBar";
-import AnimatedSection from "../components/AnimatedSection";
-import AboutMeContent from "../components/AboutMeContent";
-import "../index.css";
-import { motion } from "framer-motion";
+import { Link } from 'react-router-dom';
+import { portfolio } from '../content/config';
+import AboutMeContent from '../components/AboutMeContent';
+import Project from '../components/Project';
 
-import Project from "../components/Project";
-
-const Home: React.FC = () => {
+export default function Home() {
+  const { identity, projects } = portfolio;
   return (
     <>
-      <motion.header
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-        className="fixed top-0 left-0 w-full z-50 bg-black"
-      >
-        <NavBar />
-      </motion.header>
-
-      <main className="bg-black">
-        <div
-          id="about"
-          className="pt-24 md:pt-28 min-h-[60vh] md:min-h-[52vh] flex items-start justify-center transition-opacity duration-700 opacity-0 animate-fadeIn"
-        >
-          <AboutMeContent />
+      <section className="hero page-width" aria-labelledby="hero-title">
+        <div className="hero-top small">
+          <p>{identity.role}</p>
+          {portfolio.demo && <p className="demo-note">Demo portfolio</p>}
         </div>
-
-        {/* Sección projects pegada al about me, título estático */}
-        <section
-          id="projects"
-          className="w-full flex flex-col items-center justify-start"
-        >
-          <div className="w-full max-w-6xl mx-auto px-2 md:px-5">
-            <div className="opacity-0 animate-fadeIn">
-              <Project
-                image="https://res.cloudinary.com/dimmyentl/image/upload/v1753950999/Imagen_de_WhatsApp_2025-07-31_a_las_01.32.01_0859db68_esjsx9.jpg"
-                title="DEVON X CHRIZ"
-              />
-            </div>
-            <AnimatedSection effect="fadeUp" id="project-2" once={false}>
-              <Project
-                image="https://res.cloudinary.com/dimmyentl/image/upload/v1753951613/UCBFW_x_CHRIZ_Album_kypoor.jpg"
-                title="UCBFW X CHRIZ"
-                reverse
-              />
-            </AnimatedSection>
-            <AnimatedSection effect="fadeUp" id="project-3" once={false}>
-              <Project
-                image="https://res.cloudinary.com/dimmyentl/image/upload/v1753951607/ITZA_x_CHRIZ_Album_zqwbob.jpg"
-                title="ITZA X CHRIZ"
-              />
-            </AnimatedSection>
-          </div>
-        </section>
-
-        <div className="w-full flex justify-center items-end p-12">
-          <p className="text-xs uppercase tracking-widest text-gray-400 text-center px-4">
-            CHRIZ
-          </p>
+        <h1 id="hero-title">{identity.name}<span aria-hidden="true" className="hero-period">.</span></h1>
+        <div className="hero-bottom">
+          <p className="hero-intro">{identity.intro}</p>
+          <Link className="primary-link" to="/#work">View selected work <span aria-hidden="true">↓</span></Link>
         </div>
-      </main>
+      </section>
+      <section id="work" className="work-section page-width" aria-labelledby="work-title" tabIndex={-1}>
+        <div className="section-heading"><h2 id="work-title">Selected work</h2><p className="small">{projects.length === 1 ? '1 project' : `${projects.length} projects`}</p></div>
+        {projects.length > 0 ? <div className="project-list">{projects.map((project, index) => <Project key={project.slug} project={project} reverse={index % 2 === 1} />)}</div> : (
+          <div className="empty-state"><h3>New work is on its way.</h3><p>Projects will appear here soon.</p><Link className="text-link" to="/contact">Get in touch ↗</Link></div>
+        )}
+      </section>
+      <AboutMeContent />
+      <section className="contact-band" aria-labelledby="collaborate-title"><div className="page-width"><h2 id="collaborate-title">Let's make something.</h2><Link className="text-link" to="/contact">Get in touch <span aria-hidden="true">↗</span></Link></div></section>
     </>
   );
-};
-
-export default Home;
+}

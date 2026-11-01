@@ -10,7 +10,9 @@ Turn Personal Showcase into a configurable, accessible static creative portfolio
 
 ## Milestones
 - A complete: repository and base verified, unrelated work isolated, initial code/tool audit performed.
-- B–G pending: configuration, functional pages, visual/accessibility work, tests, public documentation, final review.
+- B–D complete: typed/validated JSON configuration, local original artwork, functional work/detail/contact/404 pages, accessible galleries/navigation, responsive styling and reduced motion.
+- E in progress: 27 unit tests and 16 desktop/mobile browser flows pass. Visual captures reviewed at 1440/390; metrics at 1440/768/390/320 show no horizontal overflow and default hero at most two lines. Final production/customization verification pending.
+- F–G pending: public guides, final review, clean-install verification, final push.
 
 ## Findings and decisions
 - Baseline lint/build pass using ancestor-installed dependencies; this is not a clean-install verification.
@@ -22,7 +24,13 @@ Turn Personal Showcase into a configurable, accessible static creative portfolio
 - Acceptance: clean install; lint/typecheck/build; valid/invalid configuration and local assets; real navigation/details/gallery; keyboard/mobile/reduced-motion QA; empty/optional content; documented customization and static hosting.
 
 ## Checks and known limits
-Initial lint/build pass. Browser QA, configuration tests, dependency audit, and clean installation pending.
+- Clean `npm ci` succeeds in the isolated checkout. Current lint/typecheck/build pass after compatible dependency updates.
+- 27 unit tests pass: complete/minimal/single config, invalid fields/links/paths/contrast, escaped metadata, subdirectory sharing URLs.
+- 16 Playwright flows pass on Chromium desktop/mobile, including axe WCAG A/AA scans of home, project, lightbox, contact and customized light theme; native dialog focus cycling/return; menu Escape; skip/section focus; refresh/404; image failures; empty/single content; 320px/reduced motion.
+- Build JS is 89.7 kB gzip vs 112.7 kB baseline. Runtime now only React, React DOM, Router; unused icon/UI/motion libraries and unlicensed personal/font assets removed.
+- `npm audit --omit=dev`: zero vulnerabilities. Full audit reports 12 moderate development-tool dependency findings stemming from the minimatch advisory GHSA-g3hv-75wg-m249. No compatible upstream resolution from `npm update`; do not apply forced downgrades or cross-major overrides without testing.
+- Hash routing intentionally supports static hosts/subdirectories without rewrites. It limits per-project crawler/social metadata; static homepage metadata is generated at build time. No deploy performed.
+- Original SVG studies replace photographs to ensure redistributable assets. The design inspector's photo/video/motion floors are not acceptance requirements for this brief.
 
 ## Exact next step / resuming
-Run `git -C .worktrees/reusable-template status --short --branch`, read this file, and continue in that checkout. Do not edit the dirty original checkout or use `feat/chriz-portfolio-release`. Implement and test the shared configuration first; update this document at each substantial verified checkpoint, commit, and push only the authorized branch.
+Run `git -C .worktrees/reusable-template status --short --branch`, read this file, and continue in that checkout. Do not edit the dirty original checkout or use `feat/chriz-portfolio-release`. Finish the public README/customization and production smoke tests; update this document at each substantial verified checkpoint, commit, and push only the authorized branch.
