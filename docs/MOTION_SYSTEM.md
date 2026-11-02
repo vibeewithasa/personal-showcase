@@ -1,5 +1,13 @@
 # Portfolio motion system
 
+## Editorial integration — 2026-11-02
+
+The editorial branch builds from approved motion SHA 6c9b4e3775f4950824eae404047bf6384eb0e913 and preserves this native system. Photographic sessions receive the same declarations automatically. Picture overscan is 1.025 and visible drift is capped at 1.25% to preserve photographic edges. Natural image ratios, captions, single/empty layouts and previews do not change the finite presets, easing or menu/viewer lifecycle.
+
+MainLayout now owns native smooth Work/About navigation with instant reduced-motion behavior, sticky-header offsets, accessible focus and manual native history restoration scoped to the controller. Changing the OS preference does not re-run route scroll. No CSS smooth-scroll duplicate or scroll hijacker was added. Current QA retains all 108 approved browser cases and adds 36 editorial cases; current evidence supersedes the historical counts below. See QA.md.
+
+The remainder documents the original approved motion implementation and its historical evidence.
+
 Implemented on `feat/portfolio-motion-system` from confirmed remote base `87ae1e2c0eeba2e566cf4d86ac5f127ad42f1d13`, in the isolated `.worktrees/motion-design` worktree. The original template, main checkout and discarded release branch are preserved.
 
 ## Direction and implementation choice

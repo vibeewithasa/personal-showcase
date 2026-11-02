@@ -27,6 +27,8 @@ Edit `src/content/portfolio.json` in a text editor:
 - seo: title, description, favicon, optional image and real deployed siteUrl;
 - demo: change to false after replacing the demonstration identity and artwork.
 
+When replacing or deleting demo folders, update or remove seo.image if it refers to one of those photographs.
+
 Keep `projects: []` when using folders exclusively. No photograph list belongs in this owner file. Optional owner logos/portraits/favicons can live under public/images with safe names such as images/my-logo.svg. The existing owner fields and contrast validation remain supported.
 
 ## 3. Copy a session folder

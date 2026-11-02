@@ -1,49 +1,42 @@
-# Portfolio motion implementation status
+# Editorial sessions implementation status
 
-## Active scope and Git safety
+Reviewed 2026-11-02. Authorized branch: `feat/portfolio-editorial-sessions`, isolated worktree `.worktrees/editorial-sessions`. Base: confirmed origin/feat/portfolio-motion-system at `6c9b4e3775f4950824eae404047bf6384eb0e913`.
 
-Current work: `feat/portfolio-motion-system`, isolated `.worktrees/motion-design`, from confirmed origin base `87ae1e2c0eeba2e566cf4d86ac5f127ad42f1d13`. This mission builds on the completed reusable template and publication review; it does not rewrite them.
+## Completed
 
-- Main remains `e05d815e10c3a97dd4a3aacb2dafe0adee820a85`. Its dirty Home/routes and untracked MainLayout/Contact/agent files are preserved.
-- `feat/reusable-portfolio-template` remains at 87ae1e2. The discarded release branch remains at 47d3ac1220ed5f442bb2fe2dc07d95701ee81789 and was not used or changed.
-- Origin's old asa-dot/PersonalShowcase URL redirects to vibeewithasa/personal-showcase, repository 991135749.
-- Commit/push only this motion branch. No PR, merge to main, deployment, credential/service or paid resource.
+- Significant black photography/editorial redesign: local licensed serif, unequal prints, natural-ratio gallery, restrained actions, refined header/about/contact/footer and explicit single/empty layouts.
+- Approved native masks/shutters/stagger/menu/viewer retained; bounded photographic drift, live reduced motion and visible failure fallback.
+- Smooth native Work/About anchors with header offsets, accessible focus, repeated/cross-route/direct/history/reload support and no duplicated route scroll.
+- Safe automatic folder sessions, optional strict metadata, natural/manual ordering, deterministic covers, Unicode/camera filenames, useful validation and legacy-project collision rules.
+- Build-only image dimensions/EXIF orientation and non-destructive 960/1920px WebP previews; content hashes, lazy loading and current-only build emission.
+- Real Vite watcher integration for add/replace/rename/delete, invalid/fixed metadata and root recreation.
+- Two different demo structures with four labelled original generated scenes; local OFL fonts, exact source/prompt notes and no private/client artwork.
+- English README, nontechnical sessions/owner guides, deployment/privacy/SEO, architecture, motion integration, visual critique and QA evidence.
 
-## Completed implementation
+## Verification
 
-- Native finite Web Animations + IntersectionObserver + CSS, with centralized timing/presets. No new dependency or lockfile change.
-- Masked word hero choreography; separate heading/copy/action entrances; alternating image shutters, capped stagger, bounded visible-image drift.
-- About/portrait/contact/empty/404 and detail/story/next-project entrances.
-- Mobile menu surface/link entry, cancellable inert exit, active underline and disclosure rotation. Navigation never waits for outgoing page animation.
-- Native gallery surface, directional photo, counter, load resolve, backdrop/close animations; native semantics, focus trap/return and scroll release retained.
-- Live reduced motion, animation-API failure fallback, no persistent hidden CSS, focus cancellation and page cleanup.
-- Escaped actual-content no-JavaScript static portfolio generated at build time; no router or SEO migration.
-- QA fixes: transient mobile overflow, animated light-theme contrast, desktop links after mobile resize, failed-photo slot stability and 320px trailing-letter name wraps.
+61 unit/integration tests and 144 browser cases pass locally; all approved 33/108 retained. Three engines, six profiles, one local worker, zero retries. Clean [Ubuntu source run 41430646881](https://github.com/vibeewithasa/personal-showcase/actions/runs/41430646881), e050fc8, passes 61/144 with all workflow steps and no skips/flakes. First implementation run was green with one retried WebKit frame-probe flake; corrected and disclosed in QA.md.
 
-See [MOTION_SYSTEM.md](MOTION_SYSTEM.md) for the per-section choreography, timings, lifecycle, tuning and visual artifacts.
+Actual isolated-file customization: long identity, local logo/photo, light palette, no About and one portrait pass check/61 plus 144 browsers. Twelve folders/72 generated-demo copies pass check/61 plus 48 editorial/production cases. Empty actual build passes check/61 plus 12 production/no-JavaScript cases, with no stale dist/media.
 
-## Verification and continuity
+Desktop/tablet/mobile plus 320px stress review, sessions/viewer/landscape/menu/contact/reduced/no-JavaScript, before/after screenshots, two interaction recordings and performance samples remain local and ignored. Original inspector's finite-WAAPI blind spot is disclosed separately from the supplementary native-effect recorder. See QA.md and VISUAL_REVIEW.md; no claim that the unchanged style gate is green.
 
-Implementation milestone `d12237e71c52553c260a84e77595ec5aea4f2a87`: local and [hosted Ubuntu Actions run 41362032488](https://github.com/vibeewithasa/personal-showcase/actions/runs/41362032488) pass 33 units / 102 browsers without skips or reported flakes. Final narrow-word regression expands the browser suite to 108; the isolated local run passes 108/108 with one worker and zero retries.
+Production JS 292.59 kB / 92.50 gzip (approved motion 290.18 / 91.90); CSS 23.54 / 6.07. Local samples show CLS 0, median/p95 about 16.7ms, no idle effects, zero original-photo requests on home; not real-device certification. Production audit zero; same twelve moderate development-only findings, no high/critical.
 
-Final-source 3146b0bcd2f6c3080878d715c57072e2077da8d7 also passes [hosted run 41363073809](https://github.com/vibeewithasa/personal-showcase/actions/runs/41363073809): every step, 33 units / 108 browsers, no skips or reported flakes.
+## Git safety and continuity
 
-Actual-file customization copy: npm ci/check and the final 108 browsers pass with long identity, light theme, replacement local artwork/logo, no about, one project/cover gallery and all demo public SVGs removed. Zero-project actual build/no-JavaScript variant passes check plus 12 browser cases. Final narrow typography was rebuilt with the real customized JSON and visually confirmed at 320/1440. Source demo content is unchanged.
+Protected starting refs:
+- main e05d815e10c3a97dd4a3aacb2dafe0adee820a85;
+- reusable 87ae1e2c0eeba2e566cf4d86ac5f127ad42f1d13;
+- approved motion 6c9b4e3775f4950824eae404047bf6384eb0e913;
+- discarded release 47d3ac1220ed5f442bb2fe2dc07d95701ee81789.
 
-Reviewed screenshots at 1440/768/390 and customized 320, mobile and landscape viewer, menu/contact, no JavaScript and in-flight masks. Desktop/mobile interaction recordings and production performance sample stay ignored in .taste-skill/qa. Inspector findings and one interrupted local run are disclosed in QA.md.
+Original main checkout's modified Home/routes, untracked MainLayout/Contact and .serena files are preserved. Origin's old asa-dot/PersonalShowcase URL redirects to vibeewithasa/personal-showcase. Only the new branch receives commits/push; no PR, merge, deployment or destructive reset.
 
-Current JavaScript: 290.18 kB / 91.90 kB gzip versus base 282.59 / 89.86. CSS 21.21 / 5.36; HTML 4.84 / 1.92. Local production sample: CLS 0 both; 16.7ms median frame interval, no active idle animations. No real-device FPS claim.
+Milestones: 2d75f375c1f9bd6e1e384f2ee3b5f28cb984c468 (implementation), e050fc8109bb0302a9e55a5efa30ec18c7bfd938 (verified layout/navigation refinements). Final documentation/visitor-copy commit is identified by branch history and the delivery report, which verifies its hosted job and local/remote SHA equality.
 
-## Preserved baseline and accepted limits
+Before continuing: inspect status, worktrees, branch and remote; work only here and push explicitly to origin/feat/portfolio-editorial-sessions. Preserve unrelated content. Read SESSIONS.md, EDITORIAL_IMPLEMENTATION.md, QA.md and MOTION_SYSTEM.md. QA copies/caches/traces/recordings and agent files are not site payload.
 
-Earlier template: one validated JSON, local MIT artwork, work/detail/contact/404, responsive native gallery, keyboard accessibility, static metadata, fixtures independent of user content, and root/subdirectory production smoke tests. Publication review in RELEASE_REVIEW.md fixed theme property injection, Work anchor state, WebKit focus/skip behavior and customization-coupled checks. Prior CI run 41356144473 passed 32/54.
+## Accepted limits before publication
 
-Production audit remains zero; the same 12 moderate development-only minimatch findings have no compatible verified fix in current tooling ranges. No force fix, unjustified override or major migration. Hash-route indexing/social-card limits, trusted-asset obligations, physical-device and screen-reader checks remain.
-
-## Candidate status
-
-The authorized motion scope is implemented and verified. No required application work remains. This documentation commit records the tested source and customization/visual evidence; physical-device and screen-reader review remains manual. No PR, merge or deployment is created.
-
-## Resume safely
-
-Inspect status, branch, worktrees and remote before changing anything. Work only in the motion worktree and push explicitly to origin/feat/portfolio-motion-system. Preserve original local changes and all protected branches. QA downloads, copies, recordings and traces remain ignored. Read QA.md and MOTION_SYSTEM.md before publishing or continuing.
+The implementation is a release candidate for the authorized static-template scope, not an already deployed personal portfolio. Supply real owner/contact information, replace labelled demos, review licensing/consent and EXIF/GPS, and test physical devices/screen readers. Public originals/metadata/unsupported files are copied to dist. Hash-route project SEO and the twelve development-tool advisories remain documented; no heavy framework/tooling migration was introduced.

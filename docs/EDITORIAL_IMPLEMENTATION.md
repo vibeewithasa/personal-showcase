@@ -1,17 +1,49 @@
-# Editorial sessions implementation — work in progress
+# Editorial sessions architecture
 
-Authorized branch feat/portfolio-editorial-sessions, isolated .worktrees/editorial-sessions. Base origin/feat/portfolio-motion-system verified at 6c9b4e3775f4950824eae404047bf6384eb0e913. Main, reusable and motion branches, discarded release and original dirty checkout are preserved. Push only the new branch; no PR, merge or deploy.
+Branch: `feat/portfolio-editorial-sessions`, isolated `.worktrees/editorial-sessions`, based on the approved remote motion SHA `6c9b4e3775f4950824eae404047bf6384eb0e913`. Only this new branch is authorized for commits/push. Main, reusable, discarded release, motion and unrelated local changes are protected. No PR, merge or deployment.
 
-Direction: Photographs at uneven sizes, Design Taste seed 1335841711. The folder becomes a sequence of prints: large serif identity, three unequal photographic prints, asymmetric session tiles, natural-ratio galleries, black frame and restrained warm neutral accent. Existing masked words, shutters, stagger, native menu/viewer and reduced motion are retained. Adapted the dealt palette to the explicit black brief; avoided portrait-dependent copy and pinned-about effects because no photographer identity/portrait exists and current motion is approved.
+## Visual direction
 
-Implemented: build/dev folder discovery, optional strict metadata, natural ordering/cover policy, safe encoded Unicode paths, collision checks, Sharp 0.35.5 previews/dimensions/orientation, Vite virtual module and watcher/full reload; owner JSON separated from folders, legacy manual projects with explicit unique-slug merge. Native smooth anchor scroll plus reduced-motion instant, sticky-header offsets, cross-route/repeated clicks and direct-link focus. Local OFL font and four generated photos in two different session structures. Guide: SESSIONS.md.
+“Photographs at uneven sizes” (Design Taste seed 1335841711): a folder becomes a sequence of prints. Near-black background, soft ivory, restrained warm accent, local EB Garamond display type and system reading type. The hero has three unequal prints, the work index alternates scale/alignment, galleries preserve intrinsic proportions, and the footer pairs a photograph with identity/navigation. Single and empty portfolios have explicit compositions; long identities use a smaller responsive scale.
 
-Verified so far: 60 Node tests pass including original 33, lint/TS/build pass. Real Vite watcher integration covers add/replace/rename/delete/invalid/fix. Initial browser pass: 34/36 original Chromium cases pass; two strict image locators were ambiguous after hero/footer reuse and were scoped to the project cover without removing assertions. New six browser cases cover scroll/history/reduced focus, real previews/ratios/headings, large/light-theme galleries and image failures. The full 144-case six-project matrix passes locally with one worker and zero retries. The WebKit mobile timeout was a test trying to decide menu visibility before React mounted; explicit header readiness fixes it. Anchor regressions also found/fixed direct-link focus and competing native history restoration.
+The dealt pale palette was adapted to the user's explicit black brief. No invented photographer, client, testimonial, location or biography was introduced. Open Frame is visibly a demonstration brand; all four original generated scenes are labelled. Exact generation prompts and font source are in [DEMO_IMAGE_PROMPTS.md](DEMO_IMAGE_PROMPTS.md).
 
-Visual first round: black serif/photo composition visible on desktop/tablet/mobile, no measured overflow. Found and restored missing card h3 titles after reordering metadata. Hero now begins with each cover; first gallery portrait made smaller. Capture script must wait for decoded images (initial captures included loading states), then re-capture and inspect all widths. Dedicated source of generated assets in public/sessions/README.md to finish.
+The approved Web Animations API/IntersectionObserver/CSS system remains. No animation library or replacement routing architecture was added. Existing masks, shutters, stagger, menu/viewer, reduced motion and failure fallbacks continue to work. Image overscan/drift is smaller to respect photographic edges. See [MOTION_SYSTEM.md](MOTION_SYSTEM.md).
 
-Pending: complete browser QA and any fixes, add remaining safety/large-image tests, remove unreferenced public graphic demo files, inspector/visual iterations and recordings, real-file customization/empty variants, current audit and bundle comparison, finalize README/QA/status, descriptive milestone commits/push to new branch only, hosted Actions and final remote SHA verification. No completion claim until all requested checks are done.
+## Content flow
 
-Baseline JS 290.18 kB / 91.90 gzip, CSS 21.21 / 5.36; early editorial JS 291.68 / 92.25, CSS 22.69 / 5.89 plus on-demand local font and photographic previews. Sharp only development/build. Installed older 0.34.5 was investigated and replaced immediately with patched 0.35.5; full audit returns the existing 12 moderate toolchain findings, no new high. Runtime audit to recheck.
+1. `src/content/portfolio.json` holds owner identity, contact, theme, SEO and optional legacy projects.
+2. `scripts/sessions.ts` scans immediate `public/sessions/<folder>` directories, validates optional `session.json`, discovers supported files, reads dimensions/orientation and creates cached previews.
+3. `scripts/load-portfolio.ts` resolves both sources through the existing schema and validates local originals. Manual projects come first; folder sessions follow their deterministic ordering. Duplicate slugs fail with migration guidance.
+4. `scripts/portfolio-plugin.ts` exposes the discovered projects through a Vite virtual module, serves previews in development, injects resolved static metadata/no-JavaScript content, and emits current previews to `dist/media`.
+5. Components consume the same resolved project shape. Folder sessions need no component changes or central photograph list.
 
-QA/caches/copies/captures stay ignored under .taste-skill or test-results. Original generated PNGs remain under Codex generated_images; publication JPEG/WebP copies were made non-destructively. Public originals are copied to dist by Vite: documented explicitly, including EXIF/GPS/unsupported-file caution. No private/client photos have been added.
+A small Vite plugin is used because it can share discovery with validation/tests, serve cached images, watch filesystem changes and emit build assets without a generated manifest that users might edit or forget to refresh. There is no database, server runtime, CMS or upload endpoint.
+
+## Determinism and development updates
+
+Natural numeric filenames, stable tie-breaks and optional imageOrder define gallery order. Cover priority is explicit filename, cover filename, then first ordered photo; cover selection never silently changes gallery order. Sessions use featured, numeric order, natural folder name. Unknown dates/locations/descriptions are not fabricated.
+
+Folder names yield readable slugs; non-Latin names use a stable NFC-derived hash when no explicit slug exists. Each URL path segment is encoded. Exact filenames, including case, are checked on Windows as well as Linux.
+
+The dev watcher observes owner/session changes, debounces bursts, invalidates resolved content and reloads the page. Add, replace, rename, delete, invalid/fixed metadata and deleting/recreating the sessions root are integration-tested. Every new session uses the same native motion declarations automatically. Current content hashes prevent stale previews after replacement/deletion.
+
+## Images and trust boundaries
+
+JPEG/PNG/WebP/AVIF still images are decoded by exact build-only Sharp 0.35.5. File extensions alone are not trusted; disguised/animated/multipage input fails. Symlinks/junctions, traversal, invalid metadata/paths, invalid dates and collisions fail clearly. Limits are 100 MB per input and 80 megapixels; over 12 MB warns. Sequential processing bounds concurrent decode work.
+
+Original files are never overwritten. EXIF orientation is applied to WebP publication previews capped at 960/1920px, without enlargement or composition crop. Hashed derivative names include source bytes and processing settings. Cache is ignored under node_modules/.cache; only currently referenced assets enter dist/media. Known dimensions reserve ratios, offscreen images load lazily and decode asynchronously. Home never requests full originals; the viewer requests the display preview when mounted.
+
+Everything under public is nevertheless copied into dist, including originals, session.json and unsupported files. Preview metadata stripping does not sanitize originals or grant consent. Keep masters/private photos elsewhere; publish approved, metadata-reviewed web copies only. Owner SVG/logo content is trusted input, not sanitized. See [SESSIONS.md](SESSIONS.md).
+
+## Navigation
+
+MainLayout owns route scroll. Native smooth scroll handles internal Work/About links; live reduced motion uses instant movement. Sticky-header margins, preventScroll focus, repeat clicks, cross-route entry, history, reload and direct links are covered. Native history restoration is scoped to manual while this controller is mounted, avoiding competing restoration. Media preference changes cancel smooth movement without re-running route navigation or replaying section entrances.
+
+Hash routing remains deliberately compatible with plain static root/subdirectory hosting. Static homepage metadata/no-JavaScript fallback are retained; independently indexed project HTML/social cards are still outside this architecture.
+
+## Verification and continuation
+
+See [QA.md](QA.md) for actual counts, CI logs, visual critique, customization, bundle/performance and manual limits. See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) before continuing. Do not infer publication or real-device approval from local emulation.
+
+Implementation milestone: 2d75f37. Verified refinement milestone: e050fc8. QA copies, browser traces, screenshots, recordings, caches and agent files stay ignored; generated publication assets, licences and documentation are committed.

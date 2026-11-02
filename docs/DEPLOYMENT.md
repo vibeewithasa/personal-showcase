@@ -15,7 +15,7 @@ Install the Playwright browser once before browser tests (`npx playwright instal
 
 ## Publish the build
 
-Upload **the contents of `dist/`**, including `index.html`, `assets/`, and `images/`, to your static host's public directory. Never upload `node_modules`, private files, or the source checkout as the public root. For a host that builds from Git, select the branch containing your customized template and set:
+Upload **the contents of `dist/`**, including `index.html`, `assets/`, `media/`, `sessions/`, `fonts/` and `images/`, to your static host's public directory. Never upload `node_modules`, private files, or the source checkout as the public root. For a host that builds from Git, select the branch containing your customized template and set:
 
 - Install: `npm ci`
 - Build: `npm run build`
@@ -41,7 +41,7 @@ Set `seo.siteUrl` to `https://your-domain.com/portfolio/` for the second case. T
 
 Hash routes deliberately avoid requiring SPA rewrites or a hosting-specific 404 file. Opening and refreshing a project URL asks the server for the same `index.html`; the browser selects the project from the hash. A nonexistent client route displays the portfolio's missing-page view, but the HTTP response remains the static server's normal 200 response.
 
-The initial HTML includes configurable title, description, favicon, theme colour, Open Graph text, and Twitter card type. With a real `seo.siteUrl` and image it also includes canonical, absolute Open Graph image, and Twitter image URLs. The included sharing artwork is an example; use your own JPEG/PNG for broad platform support.
+The initial HTML includes configurable title, description, favicon, theme colour, Open Graph text, and Twitter card type. With a real `seo.siteUrl` and image it also includes canonical, absolute Open Graph image, and Twitter image URLs. The configured demo photograph is an example; update or remove seo.image when replacing demo folders. Use your own approved JPEG/PNG for broad sharing-platform support. All public originals, metadata and unsupported files are copied to dist; review consent, GPS/EXIF and file contents before publication. Generated WebP previews do not remove metadata from the untouched originals.
 
 Project titles and descriptions update after JavaScript runs. Search engines and social scrapers do not all execute JavaScript or index hash routes as separate pages, so this template does **not** promise independently indexed project pages or per-project social cards. If those are important, add prerendered page output or an SSR/static-site solution and reassess routing. This static-template implementation makes no such service dependency.
 
