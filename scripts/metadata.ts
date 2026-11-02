@@ -7,6 +7,7 @@ export function metadata(config: Portfolio, base: string): HtmlTagDescriptor[] {
     tag: 'meta', attrs: { [property ? 'property' : 'name']: key, content: escape(value) },
   });
   const tags: HtmlTagDescriptor[] = [
+    { tag: 'link', attrs: { rel: 'preload', as: 'font', type: 'font/woff2', crossorigin: '', href: `${base}fonts/eb-garamond-latin-400-normal.woff2` } },
     { tag: 'title', children: escape(config.seo.title) },
     { tag: 'style', children: `:root{${Object.entries(config.theme).map(([name, value]) => `--${name}:${value}`).join(';')}}` },
     { tag: 'link', attrs: { rel: 'icon', href: `${base}${config.seo.favicon}` } },
@@ -26,7 +27,7 @@ export function metadata(config: Portfolio, base: string): HtmlTagDescriptor[] {
   const paragraphs = (items: string[]) => items.map(item => `<p>${escape(item)}</p>`).join('');
   const image = (item: PortfolioImage) => `<img src="${escape(base + (item.thumbnail || item.src))}" alt="${escape(item.alt)}" width="${item.width || 1200}" height="${item.height || 900}" loading="lazy">`;
   const about = config.about ? `<section><h2>${escape(config.about.title)}</h2>${paragraphs(config.about.paragraphs)}<ul>${config.about.services.map(item => `<li>${escape(item)}</li>`).join('')}</ul></section>` : '';
-  const projects = config.projects.map(project => `<article class="noscript-project"><h3>${escape(project.title)}</h3>${image(project.cover)}<p>${escape(project.summary)}</p>${paragraphs(project.description)}<ul>${project.gallery.map(item => `<li><a href="${escape(base + item.src)}">View image: ${escape(item.alt)}</a></li>`).join('')}</ul>${project.url ? `<a href="${escape(project.url)}">Visit project</a>` : ''}</article>`).join('');
+  const projects = config.projects.map(project => `<article class="noscript-project"><h3>${escape(project.title)}</h3>${image(project.cover)}<p>${escape(project.summary)}</p>${paragraphs(project.description.filter(paragraph => paragraph.trim() !== project.summary.trim()))}<ul>${project.gallery.map(item => `<li><a href="${escape(base + item.src)}">View image: ${escape(item.alt)}</a></li>`).join('')}</ul>${project.url ? `<a href="${escape(project.url)}">Visit project</a>` : ''}</article>`).join('');
   const contact = [
     config.contact.email ? `<a class="text-link" href="mailto:${escape(encodeURIComponent(config.contact.email).replace('%40', '@'))}">${escape(config.contact.email)}</a>` : '',
     config.contact.phone ? `<a class="text-link" href="tel:${config.contact.phone.replace(/[^+0-9]/g, '')}">${escape(config.contact.phone)}</a>` : '',

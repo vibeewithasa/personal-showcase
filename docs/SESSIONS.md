@@ -48,7 +48,7 @@ public/
 
 Each immediate folder becomes a project automatically. JPG/JPEG, PNG, WebP and AVIF are supported, case-insensitively. Names from cameras, spaces and Unicode are supported. Names are preserved on disk; URL segments are encoded for the browser.
 
-HEIC, RAW/NEF/CR2/ARW/DNG, TIFF, videos and nested image folders are not discovered. Export non-destructive JPEG/WebP copies first. A folder with no supported pictures is omitted with a warning. Unsupported files are reported rather than silently treated as photos.
+HEIC, RAW/NEF/CR2/ARW/DNG, TIFF, videos and nested image folders are not discovered. Open a master in an editor that supports its camera format and choose Export or Save a Copy. Select JPEG/sRGB, a 2000–3000px long edge and roughly 80–90% quality, save to a new folder, and copy only those exports here. Keep the master untouched. Renaming a file extension does not convert it. A folder with no supported pictures is omitted with a warning. Unsupported files are reported rather than silently treated as photos.
 
 Without metadata, the title comes from the folder name, the summary is the image count, and generic alt text identifies the session and image number. No dates, clients, locations or visual descriptions are invented. Add useful alt descriptions when you know the contents.
 
@@ -100,7 +100,7 @@ The cover is selected by:
 
 Choosing a cover does not reorder the gallery. Set imageOrder too when you want the cover first in the sequence.
 
-Folders generate lowercase URL slugs; accents are simplified, for example sesión-playa becomes sesion-playa. A folder whose name cannot generate a Latin slug needs an explicit slug. Use unique lowercase letters/numbers separated by hyphens. Duplicate or invalid slugs are errors.
+Folders generate lowercase URL slugs; accents are simplified, for example sesión-playa becomes sesion-playa. A folder without Latin characters receives a stable session-<hash> slug, so metadata remains optional. Provide an explicit slug when you want a more readable shared address. Use unique lowercase letters/numbers separated by hyphens. Duplicate or invalid slugs are errors.
 
 ## 6. Add, replace, rename or remove
 
@@ -127,7 +127,7 @@ Review your real content at desktop, tablet and phone sizes, including keyboard 
 
 Sharp is a build-only dependency. It reads EXIF orientation and dimensions, generates WebP previews capped at 960/1920 pixels on the long edge, preserves the full composition, and never enlarges small photographs. Previews use fresh content hashes after replacement. They are cached under node_modules/.cache/portfolio-images, served locally in development and emitted under dist/media for production. Only current referenced previews are emitted. Cache files are reproducible and not committed.
 
-Home/gallery thumbnails use the 960px copy; the viewer loads the 1920px copy when opened. Loading is lazy outside the first visible print, decoding is asynchronous, and known dimensions reserve each photograph's ratio. The lightbox fits the entire photograph.
+Home and small gallery frames use the 960px copy; the first and featured gallery frames use the 1920px copy for detail at larger sizes. The viewer uses the 1920px copy when opened. Loading is lazy outside the first visible print, decoding is asynchronous, and known dimensions reserve each photograph's ratio. The lightbox fits the entire photograph.
 
 **Everything inside public is public and is copied into dist, including originals, metadata and unsupported files.** Web previews omit EXIF metadata; the original files remain untouched and may still contain GPS/camera data. Put only approved web copies in public, keep camera masters/private files elsewhere, remove unsupported files before publishing, and strip sensitive metadata from your publication copies.
 

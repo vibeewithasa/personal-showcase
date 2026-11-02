@@ -3,7 +3,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import { portfolio } from '../content/config';
 import NavBar from './NavBar';
 import PortfolioImage from './PortfolioImage';
-import { usePageMotion, useMediaQuery } from '../motion/motion';
+import { usePageMotion } from '../motion/motion';
 
 export default function MainLayout() {
   const location = useLocation();
@@ -12,14 +12,17 @@ export default function MainLayout() {
   const previousLocation = useRef(location.key);
   const main = useRef<HTMLElement>(null);
   usePageMotion(main, location.pathname);
-  const reduced = useMediaQuery('(prefers-reduced-motion: reduce)');
   useEffect(() => {
     // Route scroll has one owner; native history restoration can interrupt smooth anchors.
     const previous = history.scrollRestoration;
     history.scrollRestoration = 'manual';
-    return () => { history.scrollRestoration = previous; };
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const cancelScroll = () => { if (media.matches) window.scrollTo({ top: scrollY, left: scrollX, behavior: 'instant' }); };
+    media.addEventListener('change', cancelScroll);
+    return () => { history.scrollRestoration = previous; media.removeEventListener('change', cancelScroll); };
   }, []);
   useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const id = location.hash.slice(1);
     const target = id ? document.getElementById(id) : document.querySelector<HTMLElement>('main h1');
     if (target && (id || previousLocation.current !== location.key)) {
@@ -29,7 +32,7 @@ export default function MainLayout() {
     if (id) target?.scrollIntoView({ behavior: reduced ? 'instant' : 'smooth', block: 'start' });
     else window.scrollTo({ top: 0, behavior: 'instant' });
     previousLocation.current = location.key;
-  }, [location, reduced]);
+  }, [location]);
   return (
     <>
       {/* WebKit needs explicit tabindex to include this skip link in Tab navigation. */}

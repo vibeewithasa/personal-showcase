@@ -43,13 +43,14 @@ test('editorial: anchors scroll through intermediate positions, repeat and prese
     };
   });
   await page.goto('/');
+  await page.bringToFront();
   if (!owner.about) {
     await (await nav(page)).getByRole('link', { name: 'Work', exact: true }).click();
     await settledAnchor(page, 'work'); return;
   }
   await (await nav(page)).getByRole('link', { name: 'About', exact: true }).click();
   await settledAnchor(page, 'about');
-  expect(await page.evaluate(() => Reflect.get(window, 'anchorCalls').some((call: { id: string; behavior: string; start: number; frames: number[] }) => call.id === 'about' && call.behavior === 'smooth' && call.frames.some((y, i) => i > 0 && y > call.start + 2 && y < Math.max(...call.frames) - 2)))).toBe(true);
+  await expect.poll(() => page.evaluate(() => Reflect.get(window, 'anchorCalls').some((call: { id: string; behavior: string; start: number; frames: number[] }) => call.id === 'about' && call.behavior === 'smooth' && call.frames.some(y => y > call.start + 2 && y < Math.max(...call.frames) - 2)))).toBe(true);
   const runs = await page.evaluate(() => Reflect.get(window, 'wordRuns'));
   await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
   await (await nav(page)).getByRole('link', { name: 'About', exact: true }).click();
@@ -79,6 +80,12 @@ test('editorial: reduced-motion anchors arrive immediately including direct link
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.addInitScript(() => {
     Reflect.set(window, 'scrollBehaviors', []);
+    const nativeAnimate = Element.prototype.animate;
+    Element.prototype.animate = function(frames, options) {
+      const animation = nativeAnimate.call(this, frames, options);
+      if (animation.id === 'portfolio-word') animation.pause();
+      return animation;
+    };
     const scroll = Element.prototype.scrollIntoView;
     Element.prototype.scrollIntoView = function(options) { if (typeof options === 'object') Reflect.get(window, 'scrollBehaviors').push(options.behavior); return scroll.call(this, options); };
   });
@@ -88,6 +95,20 @@ test('editorial: reduced-motion anchors arrive immediately including direct link
   await settledAnchor(page, 'work');
   expect(await page.evaluate(() => Reflect.get(window, 'scrollBehaviors').every((x: string) => x === 'instant'))).toBe(true);
   expect(await page.evaluate(() => document.getAnimations().length)).toBe(0);
+  await page.evaluate(() => scrollBy(0, 180));
+  const position = await page.evaluate(() => scrollY);
+  const calls = await page.evaluate(() => Reflect.get(window, 'scrollBehaviors').length);
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.waitForFunction(() => document.getAnimations().some(a => a.id === 'portfolio-word'));
+  await page.evaluate(() => new Promise(done => requestAnimationFrame(() => requestAnimationFrame(done))));
+  // Removing drift can cause a few pixels of native scroll anchoring; it must not restart route scroll.
+  expect(Math.abs(await page.evaluate(() => scrollY) - position)).toBeLessThan(24);
+  expect(await page.evaluate(() => Reflect.get(window, 'scrollBehaviors').length)).toBe(calls);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.waitForFunction(() => document.getAnimations().length === 0);
+  // Removing drift can cause a few pixels of native scroll anchoring; it must not restart route scroll.
+  expect(Math.abs(await page.evaluate(() => scrollY) - position)).toBeLessThan(24);
+  expect(await page.evaluate(() => Reflect.get(window, 'scrollBehaviors').length)).toBe(calls);
 });
 
 test('editorial: actual sessions keep headings, photographic ratios and use previews before viewer', async ({ page }) => {
@@ -118,24 +139,31 @@ test('editorial: actual sessions keep headings, photographic ratios and use prev
   if (images[0].caption) await expect(page.locator('.lightbox-caption')).toContainText(images[0].caption);
   await page.keyboard.press('Escape');
   await expect(first).toBeFocused();
+  await page.locator('.back-link').click();
+  await settledAnchor(page, 'work');
 });
 
 test('editorial: a large mixed gallery, long titles, light theme and no about stay usable', async ({ page }) => {
   const first = owner.projects[0];
   if (!first) { await page.goto('/'); await expect(page.getByText('New work is on its way.', { exact: true })).toBeVisible(); return; }
   const photos = first.gallery.length ? first.gallery : [first.cover];
-  const project = { ...first, slug: 'many-photographs', title: 'Light and the spaces between photographs', gallery: Array.from({ length: 30 }, (_, i) => ({ ...photos[i % photos.length], caption: 'Frame ' + (i + 1) })) };
+  const project = { ...first, slug: 'many-photographs', title: 'Light and the spaces between photographs', description: [first.summary], gallery: Array.from({ length: 30 }, (_, i) => ({ ...photos[i % photos.length], caption: 'Frame ' + (i + 1) })) };
   const config = structuredClone(owner); config.projects = []; delete config.about;
   config.identity.name = 'Alexandria Montgomery Independent Creative Practice';
   config.theme = { background: '#fafaf4', surface: '#eeeee2', text: '#171a12', muted: '#434b36', accent: '#3e4e13' };
   await page.route(/\/src\/content\/portfolio\.json(?:\?.*)?$/, route => route.fulfill({ contentType: 'application/javascript', body: 'export default ' + JSON.stringify(config) }));
   await page.route(/virtual:portfolio-sessions/, route => route.fulfill({ contentType: 'application/javascript', body: 'export default ' + JSON.stringify([project]) }));
-  await page.setViewportSize({ width: 320, height: 740 });
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName(config.identity.name);
+  await page.evaluate(() => document.fonts.ready);
+  expect((await page.getByRole('heading', { level: 1 }).boundingBox())!.height).toBeLessThan(350);
+  expect((await page.locator('.hero-prints').boundingBox())!.y).toBeLessThan(900);
+  await page.setViewportSize({ width: 320, height: 740 });
   await expect(page.locator('#about')).toHaveCount(0);
   await page.getByRole('link', { name: 'View ' + project.title, exact: true }).click();
   await expect(page.locator('.gallery-image')).toHaveCount(30);
+  await expect(page.locator('.project-story')).toHaveCount(0);
   const last = page.locator('.gallery-image').last(); await last.click(); await finish(page);
   await expect(page.getByRole('status')).toHaveText('30 / 30');
   await page.keyboard.press('ArrowRight'); await expect(page.getByRole('status')).toHaveText('1 / 30');

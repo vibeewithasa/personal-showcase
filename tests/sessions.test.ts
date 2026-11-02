@@ -223,3 +223,15 @@ test('owner asset references also reject symbolic links instead of following the
     await assert.rejects(loadPortfolio(f.root), /Symbolic links/);
   } finally { f.clean(); }
 });
+
+test('sessions: non-Latin folders work without mandatory metadata and keep a stable safe slug', async () => {
+  const f = fixture();
+  try {
+    f.photo('海辺の光', '写真 １.JPG');
+    const first = (await f.scan()).projects[0];
+    assert.equal(first.title, '海辺の光');
+    assert.match(first.slug, /^session-[a-f0-9]{12}$/);
+    assert.match(first.cover.src, /^sessions\/%/);
+    assert.equal((await f.scan()).projects[0].slug, first.slug);
+  } finally { f.clean(); }
+});

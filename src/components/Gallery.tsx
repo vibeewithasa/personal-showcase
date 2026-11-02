@@ -46,7 +46,7 @@ export default function Gallery({ images, title }: { images: ImageData[]; title:
           dialog.current?.showModal();
           opening.current = playMotion(dialog.current, 'gallery-open');
         }} aria-label={`Enlarge image ${position + 1}: ${item.alt}`} aria-haspopup="dialog">
-          <PortfolioImage image={item} eager={position === 0} />
+          <PortfolioImage image={item} eager={position === 0} full={position === 0 || (position + 1) % 5 === 0} />
           <span className="image-action" aria-hidden="true">Enlarge ↗</span>
         </button>{item.caption && <figcaption>{item.caption}</figcaption>}</figure>)}
       </div>

@@ -52,5 +52,10 @@ test('development discovers added/replaced/renamed/deleted sessions and recovers
     await until(async () => (await source()).includes('"slug":"renamed-session"'));
     rmSync(join(root, 'public/sessions/renamed-session'), { recursive: true });
     await until(async () => /export default \[\]/.test(await source()));
+    rmSync(join(root, "public/sessions"), { recursive: true });
+    await until(async () => /export default \[\]/.test(await source()));
+    mkdirSync(join(root, "public/sessions/recreated"), { recursive: true });
+    writeFileSync(join(root, "public/sessions/recreated/one.jpg"), image);
+    await until(async () => (await source()).includes("Recreated"));
   } finally { await server.close(); rmSync(root, { recursive: true, force: true }); }
 });

@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <section className="hero page-width" aria-labelledby="hero-title" data-motion-group data-start>
-        <h1 id="hero-title" aria-label={identity.name}>{words.map((word, index) => <Fragment key={index}>
+        <h1 id="hero-title" className={identity.name.length > 28 ? 'long-name' : undefined} aria-label={identity.name}>{words.map((word, index) => <Fragment key={index}>
           {index > 0 && ' '}<span className="word-mask"><span data-motion="word" data-order={Math.min(index + 1, 3)}>{word}{index === words.length - 1 && <span aria-hidden="true" className="hero-period">.</span>}</span></span>
         </Fragment>)}</h1>
         <div className="hero-top small">

@@ -50,7 +50,8 @@ export async function discoverSessions(publicRoot: string, cacheRoot: string) {
       }
     }
     if (!photos.length) { warnings.push(`Empty session sessions/${entry.name}: no supported photographs, not listed.`); continue; }
-    const slug = meta.slug === undefined ? entry.name.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') : text(meta.slug, metadataPath + '.slug');
+    const inferredSlug = entry.name.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const slug = meta.slug === undefined ? inferredSlug || 'session-' + createHash('sha256').update(entry.name.normalize('NFC')).digest('hex').slice(0, 12) : text(meta.slug, metadataPath + '.slug');
     if (!slugPattern.test(slug)) fail(metadataPath, 'provide a lowercase slug such as coastal-light.');
     const title = meta.title === undefined ? entry.name.replace(/[-_]+/g, ' ').replace(/^./u, c => c.toLocaleUpperCase('en')) : text(meta.title, metadataPath + '.title');
     for (const key of ['summary', 'category', 'cover', 'date']) if (meta[key] !== undefined) text(meta[key], metadataPath + '.' + key);
