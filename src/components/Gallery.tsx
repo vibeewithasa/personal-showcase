@@ -37,7 +37,7 @@ export default function Gallery({ images, title }: { images: ImageData[]; title:
   return (
     <section className="gallery" aria-label={`${title} gallery`}>
       <div className="gallery-grid">
-        {images.map((item, position) => <button className="gallery-image" data-motion={position % 2 ? 'picture-reverse' : 'picture'} type="button" key={`${item.src}-${position}`} onClick={event => {
+        {images.map((item, position) => <figure className="gallery-item" key={`${item.src}-${position}`}><button className="gallery-image" data-motion={position % 2 ? 'picture-reverse' : 'picture'} type="button" onClick={event => {
           opener.current = event.currentTarget;
           setIndex(position);
           setSession(current => current + 1);
@@ -48,7 +48,7 @@ export default function Gallery({ images, title }: { images: ImageData[]; title:
         }} aria-label={`Enlarge image ${position + 1}: ${item.alt}`} aria-haspopup="dialog">
           <PortfolioImage image={item} eager={position === 0} />
           <span className="image-action" aria-hidden="true">Enlarge ↗</span>
-        </button>)}
+        </button>{item.caption && <figcaption>{item.caption}</figcaption>}</figure>)}
       </div>
       <dialog ref={dialog} className="lightbox" onClose={() => {
         closing.current = null;
@@ -67,8 +67,8 @@ export default function Gallery({ images, title }: { images: ImageData[]; title:
         if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
       }}>
         <div className="lightbox-toolbar"><p ref={counter} role="status" aria-live="polite">{index + 1} / {images.length}</p><button type="button" autoFocus onClick={close}>Close <span aria-hidden="true">×</span></button></div>
-        <div ref={image} className="lightbox-image"><PortfolioImage key={images[index].src} image={images[index]} eager /></div>
-        <div className="lightbox-caption"><p>{images[index].alt}</p>{images.length > 1 && <div className="lightbox-controls"><button type="button" onClick={() => step(-1)} aria-label="Previous image">←</button><button type="button" onClick={() => step(1)} aria-label="Next image">→</button></div>}</div>
+        <div ref={image} className="lightbox-image">{session > 0 && <PortfolioImage key={images[index].src} image={images[index]} eager full />}</div>
+        <div className="lightbox-caption"><p>{images[index].caption || images[index].alt}</p>{images.length > 1 && <div className="lightbox-controls"><button type="button" onClick={() => step(-1)} aria-label="Previous image">←</button><button type="button" onClick={() => step(1)} aria-label="Next image">→</button></div>}</div>
       </dialog>
     </section>
   );

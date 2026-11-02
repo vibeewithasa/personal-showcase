@@ -10,8 +10,8 @@ export default function Project({ project, reverse = false }: { project: Portfol
         <span className="image-action" aria-hidden="true">View project ↗</span>
       </Link>
       <div className="project-copy">
-        {(project.category || project.year) && <p data-motion={reverse ? 'right' : 'line'} data-order="1" className="project-meta small">{[project.category, project.year].filter(Boolean).join(' / ')}</p>}
-        <h3 data-motion="line" data-order="2"><Link to={`/work/${project.slug}`}>{project.title}</Link></h3>
+        <h3 data-motion="line" data-order="1"><Link to={`/work/${project.slug}`}>{project.title}</Link></h3>
+        {(project.category || project.date || project.year) && <p data-motion="right" data-order="2" className="project-meta small">{[project.category, project.date || project.year].filter(Boolean).join(' / ')}</p>}
         <p data-motion="rise" data-order="3">{project.summary}</p>
         <Link data-motion="right" data-order="4" className="text-link" to={`/work/${project.slug}`}>Explore project <span aria-hidden="true">↗</span></Link>
       </div>

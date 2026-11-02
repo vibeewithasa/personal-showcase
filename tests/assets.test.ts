@@ -12,7 +12,7 @@ test('content command checks real files and fails clearly for a missing asset', 
   try {
     for (const path of ['scripts', 'src/content', 'public/images']) mkdirSync(join(folder, path), { recursive: true });
     writeFileSync(join(folder, 'package.json'), '{"type":"module"}');
-    for (const path of ['scripts/validate-content.ts', 'src/content/schema.ts']) {
+    for (const path of ['scripts/validate-content.ts', 'scripts/load-portfolio.ts', 'scripts/sessions.ts', 'src/content/schema.ts']) {
       copyFileSync(new URL(`../${path}`, import.meta.url), join(folder, path));
     }
     copyFileSync(new URL('./fixtures/portfolio.json', import.meta.url), join(folder, 'src/content/portfolio.json'));

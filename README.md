@@ -1,109 +1,124 @@
 # Personal Showcase
 
-A reusable, image-led creative portfolio built with React, TypeScript, Vite, Tailwind CSS, and React Router. Personalize one JSON file, add your images, and publish the static build.
+A black editorial photography portfolio built with React, TypeScript and Vite. Change your owner JSON, copy folders of photographs, and build a static site. No backend, CMS, account, paid API or remote image/font service.
 
-The included **Studio Practice** identity and three graphic studies are clearly labeled demonstration content. No account, API key, backend, database, external image service, or paid subscription is required.
-
-## Features
-
-- One configuration file for identity, biography, services, projects, contact, colours, and metadata.
-- Responsive, alternating project layouts and real project detail pages.
-- Native modal image viewer with previous/next controls, arrow keys, Escape, focus containment, and focus return.
-- Masked hero typography, scroll reveals, subtle image depth, and animated navigation/native viewer.
-- Mobile navigation, keyboard skip link, visible focus, and live reduced-motion support.
-- Readable actual-content static fallback when JavaScript is disabled in the production build.
-- Local images with lazy loading, reserved image space, loading and failure states.
-- Empty portfolios, single projects, optional sections, and friendly missing-page recovery.
-- Build-time metadata, configurable favicon, and optional canonical/sharing URLs.
-- Configuration, local-file, contrast, and URL validation; unit and desktop/mobile browser tests.
+The included **Open Frame** identity is a neutral demonstration brand. Its four AI-generated images are sample artwork, not real client sessions or commissioned photography.
 
 ## Get started
 
-Install **Node.js 22.16 or newer** (a current supported LTS release is recommended) and npm. Node 22.16 may display an experimental type-stripping warning when running the TypeScript validation/tests; it does not indicate a failed check.
+Use Node.js 22.16 or newer and npm.
 
 ```bash
 git clone https://github.com/vibeewithasa/personal-showcase.git
 cd personal-showcase
-git switch feat/portfolio-motion-system
+git switch feat/portfolio-editorial-sessions
 npm ci
 npm run dev
 ```
 
-If you downloaded a ZIP of this branch, extract it, open a terminal in the extracted folder, and start with `npm ci`. Open the local URL printed by Vite, normally `http://127.0.0.1:5173`. Do not open `index.html` directly from disk.
+Open Vite's printed local URL, normally http://127.0.0.1:5173. A downloaded branch ZIP works too: extract it and begin with npm ci. Do not open index.html directly.
 
-## Create your own portfolio
+## Add your first session
 
-1. Add your licensed images to [`public/images/`](public/images/README.md). Use names such as `my-project.webp`, without spaces.
-2. Edit [`src/content/portfolio.json`](src/content/portfolio.json). Replace identity, introduction, about text, services, projects, contact, and SEO text. Set `demo` to `false` once your own content is ready.
-3. Replace each image's `src` and write useful `alt` text. Paths start with `images/`, without `public/` or a leading slash.
-4. Set your five theme colours. Validation checks readable contrast for text, muted text, and accent against both backgrounds.
-5. Run `npm run check`. Review the site on a phone-sized viewport, test links and galleries, and check the production preview.
-6. Run `npm run build` and publish the contents of `dist/` with your preferred static host. Nothing is deployed by these commands.
+Edit `src/content/portfolio.json` for your name, profession, introduction, biography, contact, social links, colours, logo and SEO. Set demo to false after replacing the sample content. Keep projects empty when using folders.
 
-See the [customization guide](docs/CUSTOMIZATION.md) for examples, all configuration fields, optional sections, and image guidance. The [deployment guide](docs/DEPLOYMENT.md) covers production and subdirectories.
+Then copy photographs into a new folder:
+
+```text
+public/sessions/my-session/
+  DSC_0001.JPG
+  IMG_1234.jpeg
+  Retrato final.webp
+  session.json           # optional
+```
+
+The session appears automatically. Images are discovered and naturally ordered; no central image-path list is required. The development server reloads after additions, replacements, renames, deletions or metadata changes.
+
+Optional session.json:
+
+```json
+{
+  "title": "My session",
+  "summary": "Your introduction to this sequence.",
+  "cover": "Retrato final.webp",
+  "photos": {
+    "Retrato final.webp": {
+      "alt": "A meaningful description of your photograph.",
+      "caption": "An optional caption."
+    }
+  }
+}
+```
+
+See the **[step-by-step session guide](docs/SESSIONS.md)** for ordering, all metadata fields, formats, filenames, migration and publication. [Owner customization](docs/CUSTOMIZATION.md) covers the global settings.
+
+## Features
+
+- Automatic static sessions from immediate public/sessions folders; optional strict metadata.
+- Natural filename ordering, explicit/cover-name/first-photo cover policy, optional manual image/session order.
+- Camera filenames, uppercase extensions, spaces and Unicode encoded safely.
+- Responsive photographic ratios, asymmetric print composition and a locally hosted OFL display font.
+- Build-generated 960/1920px WebP previews with EXIF orientation and stable dimensions; camera originals stay untouched.
+- Preserved native motion: masked words, shutters, stagger, subtle image drift, animated menu and viewer.
+- Smooth Work/About navigation, direct links, repeat clicks/history, accessible focus and live reduced-motion support.
+- Native dialog gallery with keyboard controls, focus containment/return, captions and image-failure states.
+- Empty/single/large galleries, optional about/contact content, custom contrast-checked themes.
+- Escaped build-time homepage metadata and readable no-JavaScript portfolio.
+- Legacy manual projects supported without silent slug conflicts or duplicated session records.
 
 ## Commands
 
 | Command | Purpose |
 | --- | --- |
-| `npm ci` | Install the exact dependency versions in the lockfile |
-| `npm run dev` | Start the local development server |
-| `npm run validate` | Validate configuration and referenced local image files |
-| `npm run lint` | Run ESLint |
-| `npm run typecheck` | Check app, build scripts, and tests with TypeScript |
-| `npm test` | Run Node unit tests |
-| `npm run check` | Run lint, unit tests, validation, TypeScript, and production build |
-| `npm run test:e2e` | Build, then run Playwright/axe across Chromium, Firefox, and WebKit |
-| `npm run build` | Validate and produce the static site in `dist/` |
-| `npm run preview` | Serve the current production build locally |
+| npm ci | Install the locked dependencies |
+| npm run dev | Start local development with folder discovery |
+| npm run validate | Validate owner, sessions and original asset references |
+| npm run lint | ESLint |
+| npm test | Node unit/integration tests |
+| npm run typecheck | App, scripts and test TypeScript |
+| npm run check | Lint, tests, validation, TypeScript and production build |
+| npm run test:e2e | Build and run all six Playwright browser projects |
+| npm run build | Produce the static dist folder and current previews |
+| npm run preview | Serve the actual production output locally |
 
-For browser tests, install the three Playwright engines once:
+Before browser tests, install engines once:
 
 ```bash
 npx playwright install chromium firefox webkit
 npm run test:e2e
 ```
 
-On a Linux CI machine, `npx playwright install --with-deps chromium firefox webkit` also installs browser system dependencies and may require administrator privileges. Browser downloads require network access. To use an installed Chrome or Edge for the Chromium projects, set `PLAYWRIGHT_CHANNEL` to `chrome` or `msedge`; Firefox/WebKit still use their installed Playwright engines. Tests cover keyboard navigation, gallery controls, image errors, empty/single/customized portfolios, 320px layout, reduced motion, accessibility scans, and production builds at root/subdirectory paths.
+Linux CI uses install --with-deps. On constrained Windows hardware, run the browser suite alone with --workers=1 --retries=0 after building. Do not rebuild nested QA copies while a Vite-based browser suite is running.
 
-## Project structure
+## Content and build structure
 
 ```text
-src/content/portfolio.json  Identity, content, projects, colours, SEO
-src/content/schema.ts      Shared configuration validation and types
-src/components/            Layout, navigation, project rows, image handling, gallery
-src/pages/                 Home, project detail, contact, missing page
-src/routes/                Route definitions
-src/index.css              Responsive layout and visual styles
-src/motion/                Native motion presets, tokens and lifecycle
-public/images/             Your local images and bundled sample artwork
-scripts/                   Build-time metadata and local-asset validation
-tests/                     Unit and browser tests
-docs/                      Customization, deployment, QA, implementation status
+src/content/portfolio.json    Owner identity, theme, contact, SEO; legacy projects
+public/sessions/<folder>/    Original web-ready photographs and optional session.json
+public/images/              Owner logos, portrait, favicon and other manual assets
+public/fonts/               Local WOFF2 and SIL OFL licence
+scripts/sessions.ts          Safe discovery, metadata and image previews
+scripts/load-portfolio.ts    Shared resolved content and asset validation
+scripts/portfolio-plugin.ts Vite virtual content, watcher and emitted previews
+src/motion/                 Existing native motion presets/tokens/lifecycle
+tests/                      Frozen fixtures plus actual-content/build tests
+docs/SESSIONS.md             Nontechnical setup and session guide
 ```
 
-## Contact and metadata
+No generated manifest is edited or committed. Preview cache files live under node_modules/.cache/portfolio-images; production receives only currently referenced previews under dist/media.
 
-There is no pretend contact form. Configured email and phone values become `mailto:` and `tel:` links; optional external links open in new tabs. The demo contains no invented email address. If no contact method is configured, it shows an honest unavailable state.
+## Publish responsibly
 
-The site uses hash routes, such as `/#/work/field-notes`, so deep links and refreshes work on ordinary static hosting without rewrites. Homepage title, description, favicon, and Open Graph text are generated into HTML. Set `seo.siteUrl` to your real deployment URL to enable canonical/absolute sharing URLs. This client-rendered template does not provide separate crawler-visible HTML or social cards for each project; see [deployment limitations](docs/DEPLOYMENT.md#routing-and-seo).
+Run npm run check, browser tests and npm run preview, then publish dist with your static host. These commands do not deploy anything. Hash routes work at a domain root/subdirectory without server rewrites; [deployment/SEO limits](docs/DEPLOYMENT.md) remain documented.
 
-## License and sample assets
+Everything under public is published, including original photos, metadata and unsupported files. Previews omit metadata, but originals may retain GPS/camera information. Add approved web copies only; keep camera masters/private material outside public. Folder discovery does not authorize publishing client photographs or uploading them to GitHub.
 
-Code and original bundled SVG demonstration artwork are available under the [MIT License](LICENSE). The default graphics are fictional self-initiated studies, not real client work. No third-party photographs, logos, or font files are bundled. Fonts come from the visitor's system.
-
-Replace sample work and branding before presenting the portfolio as your own professional work. You are responsible for permissions for assets you add. The MIT code license does not grant rights to third-party material you add later. See [asset notes](public/images/README.md).
-
-## Continuous integration
-
-[GitHub Actions](.github/workflows/ci.yml) runs on pushes and pull requests: locked install, content/image validation, lint, unit tests, TypeScript, production build/audit, and all six desktop/narrow/mobile browser projects. It uses Node 22 and the standard Ubuntu runner, read-only repository permissions, pinned official actions, and no external credentials or deployment service.
-
-Tests use frozen demonstration fixtures under `tests/fixtures/`, so replacing your content or deleting public demo images does not break the behavioral tests. Production smoke tests still verify your actual built portfolio, including zero projects. Keep the test fixtures when removing sample files from `public/images/`.
-
-## Motion design
-
-The motion layer uses native browser APIs and CSS, with no animation dependency. It responds live to the system reduced-motion preference and leaves content visible when effects fail. Content customization still uses the same JSON and local images. Adjust timing/easing in src/motion/motion.css; see [motion maintenance and evidence](docs/MOTION_SYSTEM.md) for presets, lifecycle and accessibility requirements.
+Code is [MIT licensed](LICENSE). EB Garamond uses the [SIL OFL](public/fonts/OFL.txt). [Demo source/prompt notes](public/sessions/README.md) identify the generated images. No third-party stock photos or mandatory font CDN are used.
 
 ## Quality and maintenance
 
-See [QA evidence and limits](docs/QA.md) and [implementation continuity](docs/IMPLEMENTATION_STATUS.md). Run `npm audit --omit=dev` for runtime dependencies and `npm audit` for the complete toolchain. Review compatible updates and rerun checks; do not use forced upgrades/downgrades as an automatic fix.
+[GitHub Actions](.github/workflows/ci.yml) checks pushes/pull requests on Node 22/Ubuntu: locked install, validation, lint, unit tests, TypeScript, production build/audit and Chromium/Firefox/WebKit. It uses pinned official actions, read-only permissions, no secrets or deploy step.
+
+Behavioral fixtures preserve legacy coverage when you replace demo content. Production/session tests read the actual resolved owner plus folders, including empty content.
+
+See [QA](docs/QA.md), [implementation continuity](docs/IMPLEMENTATION_STATUS.md), [editorial architecture](docs/EDITORIAL_IMPLEMENTATION.md) and [motion maintenance](docs/MOTION_SYSTEM.md). Audit with npm audit --omit=dev and npm audit; review compatible updates and rerun checks rather than applying forced migrations.

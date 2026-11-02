@@ -37,7 +37,7 @@ export default function NavBar() {
     return () => document.removeEventListener('keydown', close);
   }, [open]);
   const items = [
-    { to: '/', label: 'Work', active: location.pathname === '/' && location.hash !== '#about' || location.pathname.startsWith('/work/') },
+    { to: '/#work', label: 'Work', active: location.pathname === '/' && location.hash !== '#about' || location.pathname.startsWith('/work/') },
     ...(portfolio.about ? [{ to: '/#about', label: 'About', active: location.pathname === '/' && location.hash === '#about' }] : []),
     { to: '/contact', label: 'Contact', active: location.pathname === '/contact' },
   ];

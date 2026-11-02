@@ -1,12 +1,14 @@
+import { loadPortfolio } from '../../scripts/load-portfolio';
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve, sep } from 'node:path';
 
 const demo = JSON.parse(readFileSync(new URL('../fixtures/portfolio.json', import.meta.url), 'utf8'));
-const owner = JSON.parse(readFileSync(new URL('../../src/content/portfolio.json', import.meta.url), 'utf8'));
+const owner = (await loadPortfolio()).config;
 
 test.beforeEach(async ({ page }) => {
+  await page.route(/virtual:portfolio-sessions/, route => route.fulfill({ contentType: 'application/javascript', body: 'export default [];' }));
   await page.route(/\/src\/content\/portfolio\.json(?:\?.*)?$/, route => route.fulfill({ contentType: 'application/javascript', body: `export default ${JSON.stringify(demo)};` }));
   await page.route('**/images/**', route => {
     const path = resolve('tests/fixtures/images', new URL(route.request().url()).pathname.split('/').pop()!);

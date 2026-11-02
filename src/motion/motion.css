@@ -43,7 +43,7 @@
   .menu-toggle[aria-expanded="true"] .menu-symbol { transform: rotate(45deg); }
   .main-nav { transform-origin: top right; }
   .project-image-link { overflow: clip; }
-  .project-image-link .image-frame { transform: translateY(var(--image-drift, 0px)) scale(1.06); }
+  .project-image-link .image-frame { transform: translateY(var(--image-drift, 0px)) scale(1.025); }
   .image-frame img { transition: transform var(--motion-picture) var(--motion-ease); }
   .project-image-link:is(:hover, :focus-visible) img { transform: scale(1.045); }
   .gallery-image:is(:hover, :focus-visible) img { transform: scale(1.025); }

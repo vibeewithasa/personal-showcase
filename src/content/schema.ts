@@ -1,4 +1,4 @@
-export interface PortfolioImage { src: string; alt: string }
+export interface PortfolioImage { src: string; alt: string; caption?: string; width?: number; height?: number; thumbnail?: string; display?: string }
 export interface PortfolioLink { label: string; url: string }
 export interface PortfolioProject {
   slug: string;
@@ -6,6 +6,7 @@ export interface PortfolioProject {
   summary: string;
   category?: string;
   year?: string;
+  date?: string;
   cover: PortfolioImage;
   description: string[];
   gallery: PortfolioImage[];
@@ -55,6 +56,12 @@ function paragraphs(value: unknown, path: string) {
 
 function imagePath(value: unknown, path: string) {
   text(value, path);
+  if (value.startsWith('sessions/')) {
+    let parts: string[];
+    try { parts = value.split('/').map(decodeURIComponent); } catch { throw new Error(`Portfolio configuration: ${path} has invalid URL encoding.`); }
+    requireValue(!/[?#]/.test(value) && parts.length === 3 && parts.every(part => part && part !== '.' && part !== '..' && !/[\\/]/.test(part) && [...part].every(c => c.charCodeAt(0) >= 32 && c.charCodeAt(0) !== 127)) && /\.(jpe?g|png|webp|avif)$/i.test(parts[2]), path, 'must be a safe encoded local session photograph.');
+    return;
+  }
   requireValue(/^images\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-]+\.(?:avif|gif|jpe?g|png|svg|webp|ico)$/.test(value), path,
     'must be a local path such as images/my-project.webp (no leading slash, spaces, or traversal).');
 }
@@ -63,6 +70,11 @@ function image(value: unknown, path: string) {
   const item = object(value, path);
   imagePath(item.src, `${path}.src`);
   text(item.alt, `${path}.alt`);
+  optionalText(item.caption, `${path}.caption`);
+  if (item.width !== undefined || item.height !== undefined) {
+    for (const key of ['width', 'height']) requireValue(Number.isInteger(item[key]) && Number(item[key]) > 0 && Number(item[key]) <= 100000, `${path}.${key}`, 'must be a positive image dimension.');
+  }
+  for (const key of ['thumbnail', 'display']) if (item[key] !== undefined) requireValue(typeof item[key] === 'string' && /^media\/[a-f0-9]{24}-(960|1920)\.webp$/.test(item[key] as string), `${path}.${key}`, 'must reference a generated local image.');
 }
 
 function httpsUrl(value: unknown, path: string) {
@@ -140,6 +152,10 @@ export function parsePortfolio(value: unknown): Portfolio {
     const slug = project.slug as string;
     requireValue(/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) && !slugs.has(slug), `${path}.slug`, 'must be a unique lowercase slug, such as field-notes.');
     slugs.add(slug);
+    if (project.date !== undefined) {
+      text(project.date, `${path}.date`);
+      requireValue(/^\d{4}-\d{2}-\d{2}$/.test(project.date) && Number.isFinite(Date.parse(project.date)) && new Date(project.date).toISOString().slice(0, 10) === project.date, `${path}.date`, 'must be a real YYYY-MM-DD date.');
+    }
     ['category', 'year'].forEach(key => optionalText(project[key], `${path}.${key}`));
     image(project.cover, `${path}.cover`);
     paragraphs(project.description, `${path}.description`);

@@ -1,0 +1,22 @@
+{
+  "title": "Coastal light",
+  "summary": "Rock, water, and the last light on the horizon.",
+  "description": [
+    "A demonstration sequence of AI-generated coastal images, exploring scale, texture and quiet light.",
+    "These fictional scenes are sample artwork for this template. Replace them with your own photographs before presenting a professional portfolio."
+  ],
+  "category": "Landscape study",
+  "cover": "DSC_0001.JPG",
+  "featured": true,
+  "order": 0,
+  "photos": {
+    "DSC_0001.JPG": {
+      "alt": "AI-generated rocky coast under a warm horizon and clouded blue sky",
+      "caption": "Rock and water, in the last light."
+    },
+    "02 Roca fría.webp": {
+      "alt": "AI-generated isolated sea stack rising above pale ocean foam",
+      "caption": "A quieter frame. Stone, sea, and sky."
+    }
+  }
+}

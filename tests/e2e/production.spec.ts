@@ -1,9 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { readFileSync } from 'node:fs';
 import { resolve, sep } from 'node:path';
-import { parsePortfolio } from '../../src/content/schema';
+import { loadPortfolio } from '../../scripts/load-portfolio';
 
-const portfolio = parsePortfolio(JSON.parse(readFileSync(new URL('../../src/content/portfolio.json', import.meta.url), 'utf8')));
+const portfolio = (await loadPortfolio()).config;
 
 // Serve the actual build through request interception, as a plain static host would.
 test('production build works at a domain root and in a subdirectory without rewrites', async ({ page }) => {

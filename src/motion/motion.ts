@@ -83,7 +83,7 @@ export function usePageMotion(scope: RefObject<HTMLElement | null>, page: string
       const readings = [...active].map(element => ({ element, rect: element.getBoundingClientRect() }));
       for (const { element, rect } of readings) {
         const progress = Math.max(-1, Math.min(1, (innerHeight / 2 - rect.top - rect.height / 2) / innerHeight));
-        element.style.setProperty('--image-drift', `${progress * rect.height * 0.025}px`);
+        element.style.setProperty('--image-drift', `${progress * rect.height * 0.0125}px`);
       }
     };
     const scheduleDepth = () => { if (!frame) frame = requestAnimationFrame(updateDepth); };

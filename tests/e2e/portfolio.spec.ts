@@ -18,6 +18,7 @@ async function customize(page: Page, config: typeof demo) {
 }
 
 test.beforeEach(async ({ page }) => {
+  await page.route(/virtual:portfolio-sessions/, route => route.fulfill({ contentType: 'application/javascript', body: 'export default [];' }));
   await customize(page, demo);
   await page.route('**/images/**', route => {
     const name = new URL(route.request().url()).pathname.split('/').pop()!;
@@ -153,7 +154,7 @@ test('one-file customization changes identity, colours, images, contact, and opt
   await expect(page.getByText('Demo portfolio', { exact: true })).toHaveCount(0);
   await expect(page.locator('#about')).toHaveCount(0);
   await expect(page.getByText('1 project', { exact: true })).toBeVisible();
-  await expect(page.getByAltText('Replacement blue artwork')).toHaveAttribute('src', /images\/after-cover\.svg$/);
+  await expect(page.locator('.project-image-link').getByAltText('Replacement blue artwork')).toHaveAttribute('src', /images\/after-cover\.svg$/);
   expect(await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--accent').trim())).toBe('#3e4e13');
   await accessible(page);
   await page.getByRole('link', { name: 'View A new project', exact: true }).click();
