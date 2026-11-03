@@ -35,6 +35,13 @@ npm run preview
 - `src/routes/` — client-side routes
 - `src/assets/` — local assets and typography
 
+## Maintenance documentation
+
+- [Current architecture](docs/architecture.md)
+- [Editing portfolio content](docs/content-maintenance.md)
+- [Manual browser QA](docs/manual-qa.md)
+- [Known limitations](docs/known-limitations.md)
+
 ## Notes
 
 This repository is a **creative-site project**, not the GitHub author's developer profile README. Some photographs, branding, and fonts are supplied or hosted separately and may have third-party rights. Do not assume those assets are freely reusable.
