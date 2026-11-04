@@ -26,3 +26,15 @@ Run `npm install` and `npm run dev`, then open the local Vite URL printed in the
 ## Before release
 
 Run `npm run lint` and `npm run build`, then serve the compiled output with `npm run preview`. Record any browser/device-specific failures before deployment.
+
+## External asset and link regression checks
+
+The project images in `src/pages/Home.tsx` and header logo in `src/components/NavBar.tsx` use externally hosted URLs. After editing these references:
+
+- [ ] Open each image URL in a private browser window to check that it loads without a signed-in session.
+- [ ] Confirm the image is not cropped unexpectedly at narrow and wide viewports.
+- [ ] Confirm the asset owner permits its use; a successful HTTP response does not establish reuse rights.
+- [ ] Follow each Facebook, Instagram and YouTube link from both desktop and mobile navigation; verify the destination account with the content owner.
+- [ ] Check that the new-tab links retain `rel="noopener noreferrer"` when changing markup.
+
+Record broken URLs and unauthorized assets as release blockers; do not substitute unrelated stock images just to make the page appear complete.
