@@ -23,6 +23,12 @@ The three project names and Cloudinary image URLs are currently written directly
 
 This is a static client-side React site: the current home page does not fetch project records from an API or content management system.
 
+## Document head and icon
+
+`index.html`, rather than a React component, owns the current document title (`CHRIZ ㋛`), page language (`en`) and remote favicon URL. It does not currently provide a `meta name="description"` tag. The favicon `link` declares `type="image/svg+xml"`, but its Cloudinary resource path ends in `.jpg` with image-format negotiation parameters; confirm the response format and declare a matching type if the asset is updated.
+
+A rebrand or search-preview update needs to review this HTML alongside `NavBar.tsx`, `AboutMeContent.tsx` and `Home.tsx`; editing the visible React logo alone does not change the browser tab icon or title. This identifies source-code maintenance points, not verified live search or social-preview behavior.
+
 ## Validation
 
 Use `npm run lint` for ESLint and `npm run build` for TypeScript plus Vite production compilation. The repository does not currently define a `test` script.
