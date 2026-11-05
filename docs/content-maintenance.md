@@ -20,6 +20,18 @@ The cards are displayed in source order. The second and third are wrapped in `An
 
 The navbar contains a Contact link to `/contact`, but `src/routes/PersonalShowcaseRoutes.tsx` currently defines only `/`. Do not advertise the Contact page as working until a route is implemented.
 
+## Updating the browser tab and favicon
+
+The browser tab is not configured in `AboutMeContent.tsx` or `NavBar.tsx`. For a branding update:
+
+1. Open `index.html` and edit the document `<title>` separately from the visible `Home.tsx` footer and header branding.
+2. Review the `<link rel="icon">` URL in `index.html`, which currently references a Cloudinary-hosted image. Verify the actual response's media type before setting the favicon `type` attribute; it currently claims SVG while the image resource is named `.jpg`.
+3. Add or update a truthful search description only after the content owner has approved the copy. The current HTML has no `meta name="description"` entry.
+4. Check the document's `lang="en"` against the final language of the public-facing copy; do not change the declaration without reviewing the page language.
+5. Open the built site with `npm run preview` and check the tab title and icon in a private window. Browser checks are still required because a successful build does not validate remote favicon responses.
+
+These steps are separate from changing a project image, and do not imply that metadata was updated automatically.
+
 ## Review before publishing
 
 1. Verify each new image URL loads and its subject matches the title.
