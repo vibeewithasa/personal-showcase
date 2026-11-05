@@ -7,7 +7,7 @@ A responsive portfolio website for **CHRIZ**, showcasing photography and filmmak
 - Dark visual design centered on project photography
 - Animated page entrance and scroll-based transitions using Framer Motion
 - Responsive layout for desktop and mobile
-- Project showcase and contact navigation
+- Three-image project showcase; desktop and mobile navigation (the Contact link currently points to an unimplemented route)
 - Social media integration
 
 ## Tech stack
