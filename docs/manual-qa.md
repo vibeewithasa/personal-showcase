@@ -23,6 +23,17 @@ Run `npm install` and `npm run dev`, then open the local Vite URL printed in the
 - Inspect the mobile menu checkbox's accessible name.
 - Review animation behavior with reduced-motion enabled at the OS/browser level; the current `AnimatedSection` implementation does not explicitly check that preference.
 
+## Social icon accessible-name regression
+
+`src/components/NavBar.tsx` displays Facebook, Instagram and YouTube as icon-only anchors in desktop and mobile layouts. The current anchors do not have explicit `aria-label` text or a visible text label. Their decorative SVG icons may not supply a usable link name to assistive technology.
+
+- [ ] Inspect the accessibility tree for each social link on desktop and when the mobile menu is open; confirm that its announced name identifies the destination, not just “link”.
+- [ ] Check whether the menu toggle's `Toggle menu` label and keyboard state are clear with a screen reader.
+- [ ] After closing the mobile menu, Tab through the page and verify the hidden panel's links are **not** reachable (see [known limitations](known-limitations.md#closed-mobile-menu-may-remain-in-keyboard-navigation)).
+- [ ] When implementing a fix, retest both viewports and ensure each link still opens the intended account safely.
+
+These are source-based risks awaiting manual verification, not claims of an accessibility test already passed.
+
 ## Before release
 
 Run `npm run lint` and `npm run build`, then serve the compiled output with `npm run preview`. Record any browser/device-specific failures before deployment.
