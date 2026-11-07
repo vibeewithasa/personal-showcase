@@ -6,6 +6,10 @@ This list is based on current source inspection; it is not a report of completed
 
 `NavBar.tsx` links to `/contact` in both desktop and mobile navigation, while `PersonalShowcaseRoutes.tsx` only registers `/`. A Contact page should be implemented or its links removed in a separately reviewed feature change.
 
+## Closed mobile menu may remain in keyboard navigation
+
+`NavBar.tsx` keeps the full-screen mobile panel mounted even when `isOpen` is false, hiding it with `scale-0`, `opacity-0` and `pointer-events-none`. Those CSS properties do **not** remove its links from keyboard tab order. The panel has no `hidden`, `inert` or conditional unmount, so Home, Contact and social links may still receive focus while visually closed. Confirm with keyboard and assistive-technology checks before choosing an appropriate focus-management fix; this note is based on source inspection, not a completed browser test.
+
 ## Project cards
 
 `Project.tsx` gives each card `role="button"`, `tabIndex={0}`, and a pointer cursor, but supplies neither an `onClick` handler nor keyboard activation. Cards therefore suggest an action without implementing one. Decide whether cards should navigate to project details or instead be presented as non-interactive content.
