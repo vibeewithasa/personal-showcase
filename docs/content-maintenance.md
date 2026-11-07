@@ -12,6 +12,12 @@ Edit `src/pages/Home.tsx` to change the three existing `Project` elements. Each 
 
 The cards are displayed in source order. The second and third are wrapped in `AnimatedSection` for viewport entrance effects. When adding a card, check the mobile and desktop layouts.
 
+### Handling external project cover failures
+
+`src/components/Project.tsx` renders a plain `<img src={image} alt={title}>` with `object-cover`; it does **not** currently supply an `onError` handler or replacement artwork. A missing, private, expired or blocked Cloudinary URL can leave a broken project cover even if the page itself builds successfully.
+
+For each new cover, check the exact URL from a signed-out browser, inspect the image crop at mobile and desktop widths, and ensure the short project title also makes sense as the current alt text. If a distinct accessibility description or a broken-image fallback is required, treat that as a reviewed component change, not something the existing `image` prop handles automatically.
+
 ## Branding and links
 
 - `src/components/AboutMeContent.tsx`: main logo image and profession caption.
