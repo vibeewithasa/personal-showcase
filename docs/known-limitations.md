@@ -18,6 +18,10 @@ The mobile checkbox in `NavBar.tsx` toggles `isOpen` through `onChange`, and the
 
 `Project.tsx` gives each card `role="button"`, `tabIndex={0}`, and a pointer cursor, but supplies neither an `onClick` handler nor keyboard activation. Cards therefore suggest an action without implementing one. Decide whether cards should navigate to project details or instead be presented as non-interactive content.
 
+## Document landmarks and heading hierarchy
+
+The home route in `Home.tsx` wraps `NavBar` in a `motion.header` element, while `NavBar.tsx` itself renders another `<header>` landmark. The outer header therefore contains a nested header, and the page's visible project names are `<h3>` elements without an `<h1>` or `<h2>` elsewhere in the current home content. This creates a semantic structure to review for screen-reader navigation and meaningful page hierarchy. Choose a single intended banner landmark and real heading levels in a separate UI change; a visual inspection alone is not enough to validate the result.
+
 ## Animation preferences
 
 `AnimatedSection.tsx` uses Framer Motion viewport animations and does not explicitly handle reduced-motion preferences. Review accessibility requirements before changing motion behavior.
