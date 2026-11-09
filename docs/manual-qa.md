@@ -23,6 +23,14 @@ Run `npm install` and `npm run dev`, then open the local Vite URL printed in the
 - Inspect the mobile menu checkbox's accessible name.
 - Review animation behavior with reduced-motion enabled at the OS/browser level; the current `AnimatedSection` implementation does not explicitly check that preference.
 
+## CSS entrance animations with reduced motion
+
+In addition to the Framer Motion `AnimatedSection`, `src/pages/Home.tsx` uses the `opacity-0 animate-fadeIn` utility on the About block and first project, while `src/index.css` defines a 0.7-second CSS `fadeIn` animation. `Home.tsx` also animates the outer header directly with Framer Motion. None of those three entrance paths explicitly checks `prefers-reduced-motion` in the current source.
+
+- [ ] Enable reduced motion at the OS/browser level, reload, and inspect the About section, first project and header separately from the later project cards.
+- [ ] Verify that content remains visible if animation support is disabled or styles are delayed, especially elements starting at `opacity-0`.
+- [ ] Record the actual behavior before designing a motion-preference fix; `npm run build` cannot certify this accessibility requirement.
+
 ## Resize while the mobile menu is open
 
 The full-screen overlay in `src/components/NavBar.tsx` is mounted for all viewport sizes and does not have a `md:hidden` class; its visibility is controlled by `isOpen`. The toggle is hidden at desktop width, but an already opened overlay may remain visible if the viewport is expanded from mobile to desktop without closing it first.
