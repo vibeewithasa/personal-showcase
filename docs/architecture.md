@@ -29,6 +29,10 @@ This is a static client-side React site: the current home page does not fetch pr
 
 A rebrand or search-preview update needs to review this HTML alongside `NavBar.tsx`, `AboutMeContent.tsx` and `Home.tsx`; editing the visible React logo alone does not change the browser tab icon or title. This identifies source-code maintenance points, not verified live search or social-preview behavior.
 
+## Direct links and static hosting
+
+`App.tsx` wraps the application in `BrowserRouter`, which uses normal URL paths rather than hash fragments. The only route in `PersonalShowcaseRoutes.tsx` today is `/`, so direct access to `/contact` is unsupported at the React routing layer. If the app adds a real route, the static host must also be configured to serve the SPA entry document for that path; otherwise a page that works after client-side navigation may respond with a server-side 404 when opened directly or refreshed. This repository does not contain a verified production-host rewrite rule. Test hard refresh and private-window deep links on the selected host before announcing a route as available.
+
 ## Validation
 
 Use `npm run lint` for ESLint and `npm run build` for TypeScript plus Vite production compilation. The repository does not currently define a `test` script.
