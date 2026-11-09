@@ -52,6 +52,14 @@ This test follows from the current component classes and state; the behavior has
 
 These are source-based risks awaiting manual verification, not claims of an accessibility test already passed.
 
+## Search and link-preview metadata
+
+The current root `index.html` contains a tab title and a remote favicon, but **does not define** a page description, Open Graph image/title, Twitter-card metadata or canonical URL. An image loading in the page does not prove that links shared in messaging apps will show the intended preview.
+
+- [ ] For a public deployment, check the actual generated page source, response headers and resolved favicon URL.
+- [ ] If social-preview metadata is added, use the confirmed public site URL and an image the project is permitted to display; validate the preview from an independent client/crawler.
+- [ ] Do not report search or social previews as tested solely because the React page and `npm run build` work.
+
 ## Before release
 
 Run `npm run lint` and `npm run build`, then serve the compiled output with `npm run preview`. Record any browser/device-specific failures before deployment.
