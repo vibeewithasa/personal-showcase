@@ -21,7 +21,7 @@ For each new cover, check the exact URL from a signed-out browser, inspect the i
 ## Branding and links
 
 - `src/components/AboutMeContent.tsx`: main logo image and profession caption.
-- `src/components/NavBar.tsx`: navigation labels, header logo, and social profile links.
+- `src/components/NavBar.tsx`: navigation labels, header logo, and social profile links. **Desktop and mobile links are declared separately** in this component, including all three social profiles and the Home/Contact links. Update both sets together, check for broken or mismatched handles, and test both layouts. Editing just the first occurrence of an account URL leaves the other viewport pointing to the old account.
 - `src/pages/Home.tsx`: footer label.
 
 The navbar contains a Contact link to `/contact`, but `src/routes/PersonalShowcaseRoutes.tsx` currently defines only `/`. Do not advertise the Contact page as working until a route is implemented.
