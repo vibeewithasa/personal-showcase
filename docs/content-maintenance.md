@@ -38,6 +38,12 @@ The browser tab is not configured in `AboutMeContent.tsx` or `NavBar.tsx`. For a
 
 These steps are separate from changing a project image, and do not imply that metadata was updated automatically.
 
+## Custom typography and reuse rights
+
+`src/index.css` registers a local `@font-face` named `kenygraffiti`, sourced from `src/assets/fonts/Graffiti.ttf`, and `tailwind.config.js` exposes the corresponding `font-kenygraffiti` utility. These are two separate maintenance points: changing the asset file path or family name in only one place can break the intended typography without causing a TypeScript error. Check the built page in a browser with the font loaded and with the request blocked to confirm readable fallback text.
+
+**Do not assume the font file may be redistributed** merely because the repository's source code has an MIT license. Before publishing a reusable template or distributing bundled assets, verify the font's actual license and replace it with a properly licensed alternative when necessary. This also applies to the remotely hosted photography and branding; do not copy those assets into new templates by default.
+
 ## Review before publishing
 
 1. Verify each new image URL loads and its subject matches the title.
