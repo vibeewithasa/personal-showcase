@@ -41,6 +41,16 @@ The full-screen overlay in `src/components/NavBar.tsx` is mounted for all viewpo
 
 This test follows from the current component classes and state; the behavior has not been confirmed in a browser during this documentation update.
 
+## Logo accessibility and linked image name
+
+The two brand images in `src/components/AboutMeContent.tsx` and `src/components/NavBar.tsx` both currently use the generic `alt="Logo"`. The navbar image is inside an `<a href="/">`, so that generic alternative text may also become the **accessible name of the Home link**. Neither location identifies the portfolio brand to someone listening to link or image names.
+
+- [ ] Inspect the accessibility tree and a screen reader's links list for the logo link; check whether its announced destination is understandable without looking at the page.
+- [ ] Confirm whether the large About image communicates the brand or merely decorates adjacent text. Use an accurate brand description if meaningful, or decorative alternative text only when equivalent information is already present in accessible text.
+- [ ] If changing either image, test both the navbar's link name and the separate About image, rather than applying the same alt text automatically to both.
+
+This is a **source-backed review finding**, not a completed assistive-technology test or a request to rename the brand without the owner's approval.
+
 ## Social icon accessible-name regression
 
 `src/components/NavBar.tsx` displays Facebook, Instagram and YouTube as icon-only anchors in desktop and mobile layouts. The current anchors do not have explicit `aria-label` text or a visible text label. Their decorative SVG icons may not supply a usable link name to assistive technology.
