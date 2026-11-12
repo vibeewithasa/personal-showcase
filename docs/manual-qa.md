@@ -74,6 +74,15 @@ The current root `index.html` contains a tab title and a remote favicon, but **d
 
 Run `npm run lint` and `npm run build`, then serve the compiled output with `npm run preview`. Record any browser/device-specific failures before deployment.
 
+## Project image loading under constrained networks
+
+`Home.tsx` currently renders three remote Cloudinary project covers through `Project.tsx`, whose `<img>` element has **no explicit `loading`, `decoding`, `width` or `height` attributes**. The fixed visual height from Tailwind is not a guarantee about downloaded image size or network timing. A fast local preview cannot establish how the homepage behaves with slow mobile data, blocked external resources or delayed images.
+
+- [ ] Open the built site in a clean browser profile with network throttling. Inspect all three image requests for transfer size and timing rather than assuming viewport-triggered card animations lazy-load images.
+- [ ] Disable external image requests temporarily and verify project titles remain legible, keyboard traversal is usable and the page is not hidden indefinitely by animations.
+- [ ] Record whether a cover causes visible layout movement while loading on mobile and desktop; check whether the existing CSS dimensions reserve adequate space.
+- [ ] If performance measurements justify lazy loading, responsive sources or image dimensions, implement and measure them as a separately reviewed component change. Do not make claims about Largest Contentful Paint or layout-shift scores without actually measuring them.
+
 ## External asset and link regression checks
 
 The project images in `src/pages/Home.tsx` and header logo in `src/components/NavBar.tsx` use externally hosted URLs. After editing these references:
