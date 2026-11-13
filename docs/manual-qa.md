@@ -51,6 +51,16 @@ The two brand images in `src/components/AboutMeContent.tsx` and `src/components/
 
 This is a **source-backed review finding**, not a completed assistive-technology test or a request to rename the brand without the owner's approval.
 
+## Menu-toggle semantics and announced state
+
+`NavBar.tsx` uses a **checkbox inside a styled `label.swap`** as the mobile menu toggle. The checkbox has `aria-label="Toggle menu"`, but the source does **not** expose `aria-expanded` or `aria-controls` for the overlay and does not update its accessible name to say `Abrir` or `Cerrar`. A screen reader may announce a checked/unchecked checkbox rather than an expanded/collapsed navigation menu, even though the SVG changes between hamburger and close icons.
+
+- [ ] With the menu collapsed, focus the checkbox using keyboard and inspect its role, accessible name and state using a screen reader and accessibility tree.
+- [ ] Activate with Space, confirm the menu appears and check whether its **expanded state** and close action are understandable without sight; repeat after closing it and after following Home.
+- [ ] Repeat when resizing across the `md` breakpoint; verify the hidden control's state does not leave users stranded behind an overlay.
+
+If the semantics are insufficient, implement and test an appropriate toggle/button relationship separately, preserving the visual design. This is a source-based observation, not an assistive-technology test already run.
+
 ## Social icon accessible-name regression
 
 `src/components/NavBar.tsx` displays Facebook, Instagram and YouTube as icon-only anchors in desktop and mobile layouts. The current anchors do not have explicit `aria-label` text or a visible text label. Their decorative SVG icons may not supply a usable link name to assistive technology.
