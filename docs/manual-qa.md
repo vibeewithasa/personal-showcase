@@ -23,6 +23,16 @@ Run `npm install` and `npm run dev`, then open the local Vite URL printed in the
 - Inspect the mobile menu checkbox's accessible name.
 - Review animation behavior with reduced-motion enabled at the OS/browser level; the current `AnimatedSection` implementation does not explicitly check that preference.
 
+## Focus styling on project cards
+
+`src/components/Project.tsx` sets `tabIndex={0}` and `role="button"` on each project card. Its visual transitions are **hover** and **active** driven (`group-hover:` and `group-active:`), with no explicit `focus-visible:` styling on the card. The local `src/index.css` also does not define a shared keyboard-focus outline. Browsers may provide their own default outline, but the result must be checked against the dark image/title surfaces; merely tabbing to a focusable card is not sufficient evidence that focus is visible.
+
+- [ ] Starting from the top of the page, navigate to all three cards using Tab/Shift+Tab without a mouse and locate their visible focus indicator at mobile and desktop sizes.
+- [ ] Check that image overlays and label color changes remain legible when the card is focused, not just hovered.
+- [ ] Record the separate **known activation defect** (the cards present as buttons but have no activation handlers). Address action semantics and focus presentation together in a future reviewed component change, rather than adding focus decoration to an unusable control as a complete accessibility fix.
+
+These are source-derived test cases; no browser or screen-reader test has been performed in this documentation update.
+
 ## CSS entrance animations with reduced motion
 
 In addition to the Framer Motion `AnimatedSection`, `src/pages/Home.tsx` uses the `opacity-0 animate-fadeIn` utility on the About block and first project, while `src/index.css` defines a 0.7-second CSS `fadeIn` animation. `Home.tsx` also animates the outer header directly with Framer Motion. None of those three entrance paths explicitly checks `prefers-reduced-motion` in the current source.
