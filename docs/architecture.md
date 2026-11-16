@@ -33,6 +33,12 @@ A rebrand or search-preview update needs to review this HTML alongside `NavBar.t
 
 `App.tsx` wraps the application in `BrowserRouter`, which uses normal URL paths rather than hash fragments. The only route in `PersonalShowcaseRoutes.tsx` today is `/`, so direct access to `/contact` is unsupported at the React routing layer. If the app adds a real route, the static host must also be configured to serve the SPA entry document for that path; otherwise a page that works after client-side navigation may respond with a server-side 404 when opened directly or refreshed. This repository does not contain a verified production-host rewrite rule. Test hard refresh and private-window deep links on the selected host before announcing a route as available.
 
+## Unmatched routes and fallback experience
+
+`PersonalShowcaseRoutes.tsx` registers exactly `<Route path="/" element={<Home />} />` and no wildcard (`*`) route or not-found component. As a result, when the static host serves the SPA shell for an unmatched path (such as the existing `/contact` link), React Router has **no matching page element** to render. If the host does **not** rewrite that URL to the SPA, the failure instead happens at the HTTP layer. These are different failure modes; neither is a functioning Contact page.
+
+Before publishing navigation updates, directly open `/contact` and a random unknown path in a clean browser, test refresh and history navigation, and inspect the resulting status and visible fallback. Introduce a reviewed Contact route or remove its links, plus a genuine not-found experience and verified host rewrite behavior, in a separate functional change. A successful Vite build does not establish that unmatched routes are usable.
+
 ## Validation
 
 Use `npm run lint` for ESLint and `npm run build` for TypeScript plus Vite production compilation. The repository does not currently define a `test` script.
