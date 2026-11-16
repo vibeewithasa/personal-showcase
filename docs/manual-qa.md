@@ -41,6 +41,17 @@ In addition to the Framer Motion `AnimatedSection`, `src/pages/Home.tsx` uses th
 - [ ] Verify that content remains visible if animation support is disabled or styles are delayed, especially elements starting at `opacity-0`.
 - [ ] Record the actual behavior before designing a motion-preference fix; `npm run build` cannot certify this accessibility requirement.
 
+## Background scrolling with the full-screen mobile menu
+
+`NavBar.tsx` renders the expanded mobile menu as a fixed full-viewport overlay using `h-[100dvh]` and `fixed inset-0`, but it does **not** toggle `overflow` on `body`, apply `inert` to the underlying page or implement focus containment. That means **neither background scroll prevention nor modal-style keyboard focus trapping is guaranteed by the component**. This is separate from the documented closed-menu keyboard navigation issue.
+
+- [ ] Open the menu on a touch phone and attempt to scroll the page while dragging over the overlay and its edges; inspect whether the **underlying About/projects content moves**.
+- [ ] With the overlay open, use Tab and Shift+Tab to try reaching links or project cards **behind** it; check where focus lands and whether a visible indicator remains on screen.
+- [ ] Dismiss through a navigation link and the checkbox, then inspect whether the original scroll position and focus location are sensible.
+- [ ] Record actual behavior on iOS Safari and Android Chrome where available; viewport CSS and source inspection alone are not proof of a bug or of an acceptable focus boundary.
+
+Any desired modal behavior and body-scroll locking should be implemented as a reviewed UI change with corresponding interaction tests, not silently assumed to exist.
+
 ## Resize while the mobile menu is open
 
 The full-screen overlay in `src/components/NavBar.tsx` is mounted for all viewport sizes and does not have a `md:hidden` class; its visibility is controlled by `isOpen`. The toggle is hidden at desktop width, but an already opened overlay may remain visible if the viewport is expanded from mobile to desktop without closing it first.
