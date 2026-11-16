@@ -10,6 +10,10 @@ This list is based on current source inspection; it is not a report of completed
 
 `NavBar.tsx` keeps the full-screen mobile panel mounted even when `isOpen` is false, hiding it with `scale-0`, `opacity-0` and `pointer-events-none`. Those CSS properties do **not** remove its links from keyboard tab order. The panel has no `hidden`, `inert` or conditional unmount, so Home, Contact and social links may still receive focus while visually closed. Confirm with keyboard and assistive-technology checks before choosing an appropriate focus-management fix; this note is based on source inspection, not a completed browser test.
 
+## Icon-only social links lack explicit names
+
+`NavBar.tsx` displays Facebook, Instagram and YouTube as **icon-only anchors** in two independent desktop/mobile groups. Neither group supplies explicit visible text or `aria-label` for the destination. A screen reader may therefore announce unnamed links, regardless of whether the URL is valid. This is a **source inspection risk, not a completed assistive-technology test**. Before release, inspect the accessible name and navigation order in both layouts; implement meaningful destination-specific labels in a separately reviewed component change and confirm actual screen-reader behavior. See `docs/manual-qa.md` for the test sequence.
+
 ## Mobile menu Escape and focus management
 
 The mobile checkbox in `NavBar.tsx` toggles `isOpen` through `onChange`, and the Home/Contact links close the panel on click. The component currently does **not** register an Escape-key handler to dismiss the open overlay or restore focus to the menu toggle. Combined with the hidden-link focus issue above, this makes keyboard navigation worth checking before production release. Test Escape, the focused element after closure, and the return to page content with a keyboard and screen reader; implement the fix in a separately reviewed UI change.
