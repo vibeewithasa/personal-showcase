@@ -28,7 +28,9 @@ The home route in `Home.tsx` wraps `NavBar` in a `motion.header` element, while 
 
 ## Animation preferences
 
-`AnimatedSection.tsx` uses Framer Motion viewport animations and does not explicitly handle reduced-motion preferences. Review accessibility requirements before changing motion behavior.
+`AnimatedSection.tsx` uses Framer Motion viewport animations and does not explicitly handle reduced-motion preferences. **The gap is not limited to that component:** `Home.tsx` also animates its fixed header on first render with Framer Motion (`y: -30` to `0`, 0.7 s) and assigns `opacity-0 animate-fadeIn` to About and the first project cover. `src/index.css` supplies the separate `fadeIn` keyframes. Neither path demonstrates an explicit reduced-motion alternative in its own source.
+
+With the operating system set to `prefers-reduced-motion: reduce`, test first paint, the header, About, the first project and scroll-triggered project sections in a clean browser. Ensure headings and links **remain visible** if animations are disabled, interrupted or the preference changes after page load. Review an accessible no-motion baseline for all three animation systems (Framer viewport, Framer header and CSS fade) before implementing a fix. These are source-backed risks, **not** results of a completed browser accessibility audit.
 
 ## Content management
 
