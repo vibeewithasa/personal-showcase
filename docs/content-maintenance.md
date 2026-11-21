@@ -26,6 +26,12 @@ For each new cover, check the exact URL from a signed-out browser, inspect the i
 
 The navbar contains a Contact link to `/contact`, but `src/routes/PersonalShowcaseRoutes.tsx` currently defines only `/`. Do not advertise the Contact page as working until a route is implemented.
 
+## Header logo and SPA navigation behavior
+
+The header logo in `src/components/NavBar.tsx` is wrapped in a **plain `<a href="/">`**, while the textual Home and Contact controls use React Router `<Link>`. Clicking the logo therefore requests `/` as a **full document navigation**, rather than a client-side route transition. This usually reaches the home page, but it also discards the current in-memory state and re-downloads the document. It can behave differently from Home on a preview host mounted below the domain root, or in the presence of unsaved state in future routes.
+
+When updating header branding or navigation, test the logo and Home text **separately** from the actual deployment origin: click each from a route, inspect whether a full request occurs and verify that the resulting URL is correct. The Contact destination remains **unimplemented**; do not use it to claim multi-page support. If maintaining SPA state or a subpath deployment is required, review the logo element and hosting paths as a distinct code change with browser tests, not merely an image replacement.
+
 ## Updating the browser tab and favicon
 
 The browser tab is not configured in `AboutMeContent.tsx` or `NavBar.tsx`. For a branding update:
