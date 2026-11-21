@@ -16,6 +16,15 @@ Run `npm install` and `npm run dev`, then open the local Vite URL printed in the
 - Verify the social links point to the intended profiles and open safely in a new tab.
 - **Known issue to record, not silently pass:** Contact links target `/contact`, but no Contact route is registered on the default branch.
 
+## Mobile overlay state after browser Back / Forward
+
+`NavBar.tsx` reads `useLocation()` to style Home/Contact, but the mobile panel's `isOpen` state is changed **only** by its checkbox and the Home/Contact link `onClick` handlers. A URL change caused by browser **Back/Forward**, an external router navigation or a future programmatic redirect therefore does **not explicitly dismiss** an already open overlay. This is separate from the missing Contact route and from the resize behavior tested below.
+
+- [ ] On a narrow viewport, open the mobile menu and navigate Back/Forward through known client-side history entries while it remains open. Observe the overlay, page content and selected navigation styling.
+- [ ] Repeat after navigating via a link inside the menu (which explicitly closes it), and compare whether the outcome differs.
+- [ ] Check whether screen-reader and keyboard focus remain within visible content or move to a page hidden by the overlay.
+- [ ] Record reproduction details; implement route-change dismissal only as a separate reviewed UI fix with a regression test. **No browser check was executed for this documentation update.**
+
 ## Accessibility spot checks
 
 - Use Tab and Shift+Tab to inspect focus visibility and logical order.
